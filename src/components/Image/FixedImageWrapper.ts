@@ -9,7 +9,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   width?: CSSProp;
 }
 
-const InitialImageWrapper = styled.div<Props>`
+const FixedImageWrapper = styled.div<Props>`
   position: fixed;
   width: 100vw;
   bottom: ${(props) => props.bottom + "px" || "auto"};
@@ -18,4 +18,4 @@ const InitialImageWrapper = styled.div<Props>`
   right: ${(props) => props.right + "px" || "auto"};
 `;
 
-export default InitialImageWrapper;
+export default FixedImageWrapper;
