@@ -58,12 +58,12 @@ const InitialLayout: FC = ({ children }) => {
         <Image src={BottomLeftDecoration} />
       </FixedImageWrapper>
 
-      <div className="pl-12 pt-9">
+      <div className="px-12 pt-9">
         <h1 className="text-primary text-4xl">
           stock<span className="font-bold">Screening</span>
         </h1>
+        <div className="z-10 relative">{children}</div>
       </div>
-      {children}
     </div>
   );
 };
