@@ -9,17 +9,15 @@ export type ResponseAuthLogin = {
 };
 
 export type ResponseGoogleLogin = {
-  [key: string]: {
-    profileObj: {
-      email: string;
-      familyName: string;
-      givenName: string;
-      imageUrl: string;
-      name: string;
-    };
-    tokenObj: {
-      access_token: string;
-      expires_at: number;
-    };
+  profileObj: {
+    email: string;
+    familyName: string;
+    givenName: string;
+    imageUrl: string;
+    name: string;
+  };
+  tokenObj: {
+    access_token: string;
+    expires_at: number;
   };
 };

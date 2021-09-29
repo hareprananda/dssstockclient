@@ -11,10 +11,10 @@ import { RouteUrl } from "src/route/RouteUrl";
 
 const onLoginSuccess = (router: NextRouter) => (res: any) => {
   const response = res as ResponseGoogleLogin;
-  const { profileObj } = response[Object.keys(response)[0]];
-  axios(ConfigAuth.login({ email: profileObj.email })).then(
-    (res: AxiosResponse<ResponseAuthLogin>) => {
-      LocalStorage.setLocalStorage("user_data", {
+  const { profileObj } = response;
+  axios(ConfigAuth.login({ email: profileObj.email }))
+    .then((res: AxiosResponse<ResponseAuthLogin>) => {
+      LocalStorage.set("user_data", {
         email: profileObj.email,
         imageUrl: profileObj.imageUrl,
         name: profileObj.name,
@@ -22,8 +22,10 @@ const onLoginSuccess = (router: NextRouter) => (res: any) => {
         token_expiry: res.data.expiry,
       });
       router.push(RouteUrl.dashboard);
-    }
-  );
+    })
+    .catch(() => {
+      alert("Oops something gone wrong");
+    });
 };
 
 const useGoogleAuth = (router: NextRouter) => {

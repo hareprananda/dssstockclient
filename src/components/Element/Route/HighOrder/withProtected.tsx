@@ -8,10 +8,10 @@ type TwithProtected = (
 ) => (props: any) => JSX.Element | Promise<boolean> | null;
 
 const withProtected: TwithProtected = (WrappedComponent) => {
-  return (props) => {
+  const WithProtected = (props: any) => {
+    const router = useRouter();
     if (typeof window === "undefined") return null;
 
-    const router = useRouter();
     const user_data = LocalStorage.get("user_data");
     if (!user_data) {
       router.replace(RouteUrl.login);
@@ -19,6 +19,7 @@ const withProtected: TwithProtected = (WrappedComponent) => {
     }
     return <WrappedComponent {...props} />;
   };
+  return WithProtected;
 };
 
 export default withProtected;
