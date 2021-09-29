@@ -47,7 +47,7 @@ const InitialLayout: FC = ({ children }) => {
         }}
       >
         <div style={{ maxWidth: "1000px" }}>
-          <Image src={HomeBackground} />
+          <Image src={HomeBackground} priority loading="eager" />
         </div>
       </div>
 

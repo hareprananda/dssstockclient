@@ -1,11 +1,14 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import InitialLayout from "src/layout/InitialLayout";
+import InitialLayout from "src/components/layout/InitialLayout";
+import ReduxProvider from "src/redux/ReduxProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <InitialLayout>
-      <Component {...pageProps} />
+      <ReduxProvider>
+        <Component {...pageProps} />
+      </ReduxProvider>
     </InitialLayout>
   );
 }

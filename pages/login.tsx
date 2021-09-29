@@ -1,6 +1,12 @@
-import React from "react";
-import Button from "src/components/Button.styled";
+import React, { useEffect } from "react";
+import Button from "src/components/Element/Button.styled";
+import useGoogleAuth from "src/hooks/useGoogleAuth";
+import { useRouter } from "next/router";
 const Login: React.FC = () => {
+  const router = useRouter();
+
+  const { signIn } = useGoogleAuth(router);
+
   return (
     <div>
       <h1 className="text-7xl text-primary font-bold mt-9">login</h1>
@@ -10,7 +16,7 @@ const Login: React.FC = () => {
         Berdasarkan Value Investing dengan menggunakan metode TOPSIS
       </p>
 
-      <Button className="bg-primary text-white text-2xl mt-16">
+      <Button className="bg-primary text-white text-2xl mt-16" onClick={signIn}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
