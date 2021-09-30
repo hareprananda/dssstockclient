@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, ReactElement } from "react";
 import Button from "src/components/Element/Button.styled";
 import useGoogleAuth from "src/hooks/useGoogleAuth";
 import { useRouter } from "next/router";
-const Login: React.FC = () => {
+import InitialLayout from "src/components/layout/InitialLayout";
+import { Page } from "src/types/Page";
+import Layout from "src/utils/layout/Layout";
+const Login: Page = () => {
   const router = useRouter();
 
   const { signIn } = useGoogleAuth(router);
@@ -38,3 +41,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+Layout(Login, InitialLayout);
