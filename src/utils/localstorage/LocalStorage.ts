@@ -20,7 +20,11 @@ const LocalStorage = (() => {
     return undefined;
   };
 
-  return { set, get };
+  const purge = <K extends keyof AvailKey>(key: K) => {
+    localStorage.removeItem(key);
+  };
+
+  return { set, get, purge };
 })();
 
 export default LocalStorage;

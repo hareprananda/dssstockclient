@@ -13,7 +13,7 @@ const InitialLayout: FC = ({ children }) => {
         top={-50}
         right={-70}
       >
-        <Image src={Header} alt="Header" />
+        <Header style={{ width: "1000px" }} />
         <div
           className="flex absolute bottom-60"
           style={{
@@ -49,6 +49,9 @@ const InitialLayout: FC = ({ children }) => {
         <div style={{ maxWidth: "1000px" }}>
           <Image
             src={HomeBackground}
+            width={1226}
+            height={667}
+            placeholder="blur"
             priority
             loading="eager"
             alt="Home Background"
@@ -57,10 +60,10 @@ const InitialLayout: FC = ({ children }) => {
       </div>
 
       <FixedImageWrapper bottom={-10}>
-        <Image src={BottomDecoration} alt="Bottom Decoration" />
+        <BottomDecoration style={{ height: "308px" }} />
       </FixedImageWrapper>
       <FixedImageWrapper left={-60} bottom={-100} style={{ zIndex: 0 }}>
-        <Image src={BottomLeftDecoration} alt="Bottom Left Decoration" />
+        <BottomLeftDecoration style={{ width: "1054px" }} />
       </FixedImageWrapper>
 
       <div className="px-12 pt-9">

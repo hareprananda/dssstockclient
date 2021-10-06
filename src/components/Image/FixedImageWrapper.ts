@@ -12,10 +12,10 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 const FixedImageWrapper = styled.div<Props>`
   position: fixed;
   width: 100vw;
-  bottom: ${(props) => props.bottom + "px" || "auto"};
-  top: ${(props) => props.top + "px" || "auto"};
-  left: ${(props) => props.left + "px" || "auto"};
-  right: ${(props) => props.right + "px" || "auto"};
+  bottom: ${({ bottom }) => bottom + "px" || "auto"};
+  top: ${({ top }) => top + "px" || "auto"};
+  left: ${({ left }) => left + "px" || "auto"};
+  right: ${({ right }) => right + "px" || "auto"};
 `;
 
 export default FixedImageWrapper;

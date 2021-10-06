@@ -4,13 +4,13 @@ import React from "react";
 import RegisterReducer from "./RegisterReducer";
 import { KeyRegisterReducer, TReducerObject } from "./Type/Redux";
 
-const reducer = (Object.keys(RegisterReducer) as KeyRegisterReducer[]).reduce(
-  (acc, v) => {
-    acc[v] = RegisterReducer[v]["reducer"];
-    return acc;
-  },
-  {} as TReducerObject<"reducer">
-);
+const reducer = (
+  Object.keys(RegisterReducer) as (keyof typeof RegisterReducer)[]
+).reduce((acc, v) => {
+  acc[v] = RegisterReducer[v]["reducer"];
+
+  return acc;
+}, {} as Record<string, any>) as TReducerObject<"reducer">;
 
 const store = configureStore({
   reducer,

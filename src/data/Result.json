@@ -1,0 +1,52 @@
+[
+  {
+    "ticker": "ADHI",
+    "nama": "PT Adhi Karya Persero tbk",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "ADRO",
+    "nama": "PT Adaro Energy tbk",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "AKRA",
+    "nama": "PT AKR Corporindo",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "ANTM",
+    "nama": "PT Aneka Tambang tbk",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "ASII",
+    "nama": "PT Astra International tbk",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "ASRI",
+    "nama": "PT Alam Sutra Realty tbk",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "BBCA",
+    "nama": "PT Bank Central Asia",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "BBNI",
+    "nama": "PT Bank Negara Indonesia",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "BBRI",
+    "nama": "PT Bank Rakyat Indonesia",
+    "nilai": 0.5
+  },
+  {
+    "ticker": "BBTN",
+    "nama": "PT Bank Tabungan Negara",
+    "nilai": 0.5
+  }
+]

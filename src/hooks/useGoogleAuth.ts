@@ -11,6 +11,7 @@ import { RouteUrl } from "src/route/RouteUrl";
 
 const onLoginSuccess = (router: NextRouter) => (res: any) => {
   const response = res as ResponseGoogleLogin;
+  console.log(res);
   const { profileObj } = response;
   axios(ConfigAuth.login({ email: profileObj.email }))
     .then((res: AxiosResponse<ResponseAuthLogin>) => {

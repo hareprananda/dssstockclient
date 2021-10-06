@@ -6,6 +6,6 @@ const ReducerActions = (
 ).reduce((acc, v) => {
   acc[v] = RegisterReducer[v]["actions"];
   return acc;
-}, {} as TReducerObject<"actions">);
+}, {} as Record<string, any>) as TReducerObject<"actions">;
 
 export default ReducerActions;
