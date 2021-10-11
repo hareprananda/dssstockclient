@@ -1,4 +1,4 @@
-type TypeUIState = {
+export type TypeUIState = {
   activeBottomNavbar: "home" | "list" | "upload";
 };
 

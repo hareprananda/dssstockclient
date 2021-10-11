@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
-const Button = styled.button`
-  padding: 7px 10px;
+interface Props {
+  padding?: string;
+}
+
+const Button = styled.button<Props>`
+  padding: ${({ padding }) => padding || "7px 10px"};
   display: flex;
   border-radius: 10px;
   align-items: center;

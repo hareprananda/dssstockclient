@@ -16,7 +16,8 @@ module.exports = {
       softPrimary : "#54a7f6",
       softPrimary2: "#DBECFF",
       darkPrimary: "#003875",
-      brown: "#808080"
+      brown: "#808080",
+      smoothPrimary: "#C1E1FF"
     },
     boxShadow: {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
