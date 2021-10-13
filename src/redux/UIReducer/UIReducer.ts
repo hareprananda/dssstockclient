@@ -11,6 +11,9 @@ const UIReducer = createSlice({
     ) => {
       state.activeBottomNavbar = action.payload;
     },
+    setBackDrop: (state, action: PayloadAction<boolean>) => {
+      state.backdrop = action.payload;
+    },
   },
 });
 export default UIReducer;

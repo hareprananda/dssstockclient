@@ -2,6 +2,8 @@ import React from "react";
 import Icon from "src/assets/Icon";
 import Button from "src/components/Element/Button.styled";
 import withProtected from "src/components/Element/Route/HighOrder/withProtected";
+import Link from "next/link";
+import { RouteUrl } from "src/route/RouteUrl";
 
 const List = () => {
   return (
@@ -54,26 +56,16 @@ const List = () => {
         </thead>
         <tbody>
           <tr className="border-b-2 border-brown">
-            <td className="p-2">PTBA</td>
-            <td className="p-2">PT Bukit Asam tbk</td>
-            <td className="p-2">858</td>
-            <td className="p-2">12</td>
-            <td className="p-2">2.6</td>
-            <td className="p-2">50%</td>
-            <td className="p-2">10T</td>
-          </tr>
-          <tr className="border-b-2 border-brown">
-            <td className="p-2">PTBA</td>
-            <td className="p-2">PT Bukit Asam tbk</td>
-            <td className="p-2">858</td>
-            <td className="p-2">12</td>
-            <td className="p-2">2.6</td>
-            <td className="p-2">50%</td>
-            <td className="p-2">10T</td>
-          </tr>
-          <tr className="border-b-2 border-brown">
-            <td className="p-2">PTBA</td>
-            <td className="p-2">PT Bukit Asam tbk</td>
+            <td className="p-2">
+              <Link href={`${RouteUrl.ticker}/PTBA`}>
+                <a className="text-primary">PTBA</a>
+              </Link>
+            </td>
+            <td className="p-2">
+              <Link href={`${RouteUrl.ticker}/PTBA`}>
+                <a className="text-primary">PT Bukit Asam tbk</a>
+              </Link>
+            </td>
             <td className="p-2">858</td>
             <td className="p-2">12</td>
             <td className="p-2">2.6</td>
