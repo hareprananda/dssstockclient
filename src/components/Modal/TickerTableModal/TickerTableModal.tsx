@@ -36,7 +36,7 @@ const TickerTableModal: React.FC<Props> = ({ open, toggle }) => {
             "Aset Lancar",
             "Dividen",
           ].map((value) => (
-            <div className="mb-4 mt-2">
+            <div className="mb-4 mt-2" key={value}>
               <label
                 className="block text-black text-sm font-bold mb-2"
                 htmlFor={value}

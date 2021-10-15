@@ -1,10 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import InitialLayout from "src/components/layout/InitialLayout";
 import ReduxProvider from "src/redux/ReduxProvider";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
-import Backdrop from "src/components/Element/Backdrop/Backdrop";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

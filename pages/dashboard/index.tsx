@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import withProtected from "src/components/Element/Route/HighOrder/withProtected";
 import { Page } from "src/types/Page";
 import DateHelper from "src/utils/date/DateHelper";
@@ -38,6 +38,7 @@ const Dashboard: Page = () => {
       <div className="grid grid-cols-6 gap-5 mt-8">
         {ResultData.map((data, index) => (
           <div
+            key={index}
             className="bg-primary text-white relative rounded-2xl shadow-2xl overflow-hidden"
             style={{ paddingTop: "100%" }}
           >

@@ -27,10 +27,9 @@ const DashboardLayout: React.FC = ({ children }) => {
     const pathName = router.pathname as typeof RouteUrl[keyof typeof RouteUrl];
     let dispatchValue: TypeUIState["activeBottomNavbar"] = "home";
     if (pathName === RouteUrl.list) dispatchValue = "list";
-
+    else if (pathName === RouteUrl.upload) dispatchValue = "upload";
     dispatch(ReducerActions.ui.changeActiveBottomNavbar(dispatchValue));
   }, []);
-
   return (
     <div>
       <div>
@@ -48,6 +47,7 @@ const DashboardLayout: React.FC = ({ children }) => {
             <DashboardHeader width="100%" height="130px" />
           </div>
           <img
+            alt="Auth Image"
             src={auth.imgUrl}
             className="mt-2 mx-3"
             style={{ borderRadius: "50%", width: "48px", height: "48px" }}
@@ -89,15 +89,18 @@ const DashboardLayout: React.FC = ({ children }) => {
               />
             </a>
           </Link>
-          <div
-            className={`px-5 pb-2 pt-4 ${
-              activeBottomNavbar === "upload" && "bg-white"
-            }`}
-          >
-            <Icon.UploadIcon
-              fill={activeBottomNavbar === "upload" ? "#0057b5" : "white"}
-            />
-          </div>
+          <Link href={RouteUrl.upload}>
+            <a
+              onClick={changeNavbar("upload")}
+              className={`px-5 pb-2 pt-4 ${
+                activeBottomNavbar === "upload" && "bg-white"
+              }`}
+            >
+              <Icon.UploadIcon
+                fill={activeBottomNavbar === "upload" ? "#0057b5" : "white"}
+              />
+            </a>
+          </Link>
           <div className={`px-5 pb-2 pt-4`}>
             <Icon.LogoutIcon fill="white" />
           </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, ReactElement } from "react";
+import React from "react";
 import Button from "src/components/Element/Button.styled";
 import useGoogleAuth from "src/hooks/useGoogleAuth";
 import { useRouter } from "next/router";

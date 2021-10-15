@@ -4,6 +4,7 @@ import StatisticIcon from "assets/svg/statisticIcon.svg";
 import ListIcon from "assets/svg/listIcon.svg";
 import SearchIcon from "assets/svg/searchIcon.svg";
 import CancelIcon from "assets/svg/cancel.svg";
+import CloudUploadIcon from "assets/svg/cloud_uploadIcon.svg";
 
 const Icon = {
   UploadIcon,
@@ -12,6 +13,7 @@ const Icon = {
   ListIcon,
   CancelIcon,
 
+  CloudUploadIcon,
   Search: SearchIcon,
 };
 export default Icon;

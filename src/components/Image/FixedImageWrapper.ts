@@ -1,4 +1,4 @@
-import { CSSProperties, HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import styled, { CSSProp } from "styled-components";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {

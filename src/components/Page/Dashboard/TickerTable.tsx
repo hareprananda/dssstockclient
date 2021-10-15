@@ -57,7 +57,10 @@ const TickerTable = () => {
             "Dividen",
           ].map((value) => {
             return (
-              <tr className="text-primary border-b-2 border-gray-300">
+              <tr
+                key={value}
+                className="text-primary border-b-2 border-gray-300"
+              >
                 <td className="p-2">{value}</td>
                 <td className="p-2">2000</td>
                 <td className="p-2">2000</td>
