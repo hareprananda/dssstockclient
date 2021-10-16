@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import React from "react";
 import { RouteUrl } from "src/route/RouteUrl";
 import LocalStorage from "src/utils/localstorage/LocalStorage";
 
