@@ -5,12 +5,14 @@ import DateHelper from "src/utils/date/DateHelper";
 import useRequest from "src/hooks/useRequest";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import { ResponseDssResult } from "src/request/DSS/RequestDSSType";
+import CountDetail from "src/components/Page/Dashboard/CountDetail";
 
 const Dashboard: Page = () => {
   const [currentDate, setCurrentDate] = useState("");
   const { RequestAuthenticated } = useRequest();
   const [resultData, setResultData] = useState<ResponseDssResult>([]);
   const [resultBoxLimit, setResultBoxLimit] = useState(0);
+  const [showCountDetail, setShowCountDetail] = useState(false);
 
   useEffect(() => {
     RequestAuthenticated<ResponseDssResult>(ConfigDSS.result()).then((res) => {
@@ -103,6 +105,15 @@ const Dashboard: Page = () => {
         </div>
         <div className="grid grid-cols-6 gap-5 mt-8">{resultBox}</div>
       </div>
+      {showCountDetail && (
+        <CountDetail numberOfDataOptionList={numberOfDataOptionList} />
+      )}
+      <button
+        onClick={() => setShowCountDetail((current) => !current)}
+        className="mt-10 py-1 w-full bg-primary text-white font-bold text-center"
+      >
+        {showCountDetail ? "Sembunyikan" : "Tampilkan"} detail perhitungan
+      </button>
     </>
   );
 };
