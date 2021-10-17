@@ -8,12 +8,14 @@ import { RouteUrl } from "src/route/RouteUrl";
 import ReducerActions from "src/redux/ReducerAction";
 import { TypeUIState } from "src/redux/UIReducer/UIState";
 import { useRouter } from "next/router";
+import LocalStorage from "src/utils/localstorage/LocalStorage";
+import useGoogleAuth from "src/hooks/useGoogleAuth";
 
 const DashboardLayout: React.FC = ({ children }) => {
   const {
-    auth,
     ui: { activeBottomNavbar },
   } = useAppSelector((state) => state);
+  const { signOut } = useGoogleAuth();
 
   const dispatch = useAppDispatch();
 
@@ -30,6 +32,8 @@ const DashboardLayout: React.FC = ({ children }) => {
     else if (pathName === RouteUrl.upload) dispatchValue = "upload";
     dispatch(ReducerActions.ui.changeActiveBottomNavbar(dispatchValue));
   }, []);
+
+  const userData = LocalStorage.get("user_data");
   return (
     <div>
       <div>
@@ -49,12 +53,12 @@ const DashboardLayout: React.FC = ({ children }) => {
           </div>
           <img
             alt="Auth Image"
-            src={auth.imgUrl}
+            src={userData?.imageUrl}
             className="mt-2 mx-3"
             style={{ borderRadius: "50%", width: "48px", height: "48px" }}
             referrerPolicy="no-referrer"
           />
-          <p className="text-white text-2xl">{auth.name}</p>
+          <p className="text-white text-2xl">{userData?.name}</p>
         </FixedImageWrapper>
       </div>
       <div className="max-w mx-auto px-5" style={{ maxWidth: "1665px" }}>
@@ -102,7 +106,7 @@ const DashboardLayout: React.FC = ({ children }) => {
               />
             </a>
           </Link>
-          <div className={`px-5 pb-2 pt-4`}>
+          <div className={`px-5 pb-2 pt-4 cursor-pointer`} onClick={signOut}>
             <Icon.LogoutIcon fill="white" />
           </div>
         </div>

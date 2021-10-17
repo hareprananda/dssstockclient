@@ -1,14 +1,11 @@
 import React from "react";
 import Button from "src/components/Element/Button.styled";
 import useGoogleAuth from "src/hooks/useGoogleAuth";
-import { useRouter } from "next/router";
 import InitialLayout from "src/components/layout/InitialLayout";
 import { Page } from "src/types/Page";
 import Layout from "src/utils/layout/Layout";
 const Login: Page = () => {
-  const router = useRouter();
-
-  const { signIn } = useGoogleAuth(router);
+  const { signIn } = useGoogleAuth();
 
   return (
     <div>

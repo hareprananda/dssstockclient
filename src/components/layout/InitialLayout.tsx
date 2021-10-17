@@ -5,7 +5,16 @@ import BottomLeftDecoration from "assets/svg/homeBottomLeftDecoration.svg";
 import FixedImageWrapper from "src/components/Image/FixedImageWrapper";
 import Header from "assets/svg/homeHeader.svg";
 import HomeBackground from "assets/HomeBackground.png";
+import { useRouter } from "next/router";
+import LocalStorage from "src/utils/localstorage/LocalStorage";
+import { RouteUrl } from "src/route/RouteUrl";
 const InitialLayout: FC = ({ children }) => {
+  const router = useRouter();
+
+  if (typeof window !== "undefined") {
+    const userStorage = LocalStorage.get("user_data");
+    if (userStorage) router.push(RouteUrl.dashboard);
+  }
   return (
     <div>
       <FixedImageWrapper

@@ -80,38 +80,38 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
       setCriteriaList(res.data);
     });
 
-    RequestAuthenticated<ResponseConfigDssRawData>(ConfigDSS.rawData()).then(
-      (res) => {
+    RequestAuthenticated<ResponseConfigDssRawData>(ConfigDSS.rawData())
+      .then((res) => {
         setRawData(res.data);
         setNumberOfRawData(10);
-      }
-    );
+      })
+      .catch(() => null);
 
-    RequestAuthenticated<ResponseConfigDssDetailCount>(
-      ConfigDSS.detailCount()
-    ).then((res) => {
-      const {
-        finalRanking,
-        idealSolution,
-        idealSolutionDistance,
-        normalization,
-        normalizationWeight,
-      } = res.data;
+    RequestAuthenticated<ResponseConfigDssDetailCount>(ConfigDSS.detailCount())
+      .then((res) => {
+        const {
+          finalRanking,
+          idealSolution,
+          idealSolutionDistance,
+          normalization,
+          normalizationWeight,
+        } = res.data;
 
-      setNormalizationData(normalization);
-      setNumberOfNormalizationData(10);
+        setNormalizationData(normalization);
+        setNumberOfNormalizationData(10);
 
-      setWeightNormalizationData(normalizationWeight);
-      setNumberOfWeightNormalizationData(10);
+        setWeightNormalizationData(normalizationWeight);
+        setNumberOfWeightNormalizationData(10);
 
-      setIdealSolutionData(idealSolution);
+        setIdealSolutionData(idealSolution);
 
-      setIdealSolutionDistance(idealSolutionDistance);
-      setNumberOfIdealSolutionDistance(10);
+        setIdealSolutionDistance(idealSolutionDistance);
+        setNumberOfIdealSolutionDistance(10);
 
-      setFinalRankingData(finalRanking);
-      setNumberOfFinalRankingData(10);
-    });
+        setFinalRankingData(finalRanking);
+        setNumberOfFinalRankingData(10);
+      })
+      .catch(() => null);
   }, []);
 
   const changeRawDataResult = (e: React.ChangeEvent<HTMLSelectElement>) => {

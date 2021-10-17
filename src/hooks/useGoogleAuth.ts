@@ -6,7 +6,7 @@ import {
   ResponseGoogleLogin,
 } from "src/request/Auth/RequestAuthType";
 import LocalStorage from "src/utils/localstorage/LocalStorage";
-import { NextRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { RouteUrl } from "src/route/RouteUrl";
 
 const onLoginSuccess = (router: NextRouter) => (res: any) => {
@@ -29,13 +29,19 @@ const onLoginSuccess = (router: NextRouter) => (res: any) => {
     });
 };
 
-const useGoogleAuth = (router: NextRouter) => {
+const useGoogleAuth = () => {
+  const router = useRouter();
   const { signIn, loaded: signInLoaded } = useGoogleLogin({
     clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
     onSuccess: onLoginSuccess(router),
   });
 
-  return { signIn, signInLoaded };
+  const signOut = () => {
+    LocalStorage.purge("user_data");
+    router.push(RouteUrl.login);
+  };
+
+  return { signIn, signInLoaded, signOut };
 };
 
 export default useGoogleAuth;

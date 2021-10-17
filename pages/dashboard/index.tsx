@@ -15,10 +15,12 @@ const Dashboard: Page = () => {
   const [showCountDetail, setShowCountDetail] = useState(false);
 
   useEffect(() => {
-    RequestAuthenticated<ResponseDssResult>(ConfigDSS.result()).then((res) => {
-      setResultData(res.data);
-      setResultBoxLimit(10);
-    });
+    RequestAuthenticated<ResponseDssResult>(ConfigDSS.result())
+      .then((res) => {
+        setResultData(res.data);
+        setResultBoxLimit(10);
+      })
+      .catch(() => null);
   }, []);
 
   useEffect(() => {
