@@ -13,7 +13,10 @@ const InitialLayout: FC = ({ children }) => {
 
   if (typeof window !== "undefined") {
     const userStorage = LocalStorage.get("user_data");
-    if (userStorage) router.push(RouteUrl.dashboard);
+    if (userStorage) {
+      router.push(RouteUrl.dashboard);
+      return null;
+    }
   }
   return (
     <div>

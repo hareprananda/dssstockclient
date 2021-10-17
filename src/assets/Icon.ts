@@ -6,6 +6,8 @@ import SearchIcon from "assets/svg/searchIcon.svg";
 import CancelIcon from "assets/svg/cancel.svg";
 import CloudUploadIcon from "assets/svg/cloud_uploadIcon.svg";
 import PlusIcon from "assets/svg/plus_icon.svg";
+import ArrowUp from "assets/svg/arrow_up.svg";
+import ArrowDown from "assets/svg/arrow_down.svg";
 
 const Icon = {
   UploadIcon,
@@ -17,5 +19,8 @@ const Icon = {
   CloudUploadIcon,
   PlusIcon,
   Search: SearchIcon,
+
+  ArrowUp,
+  ArrowDown,
 };
 export default Icon;

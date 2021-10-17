@@ -36,7 +36,7 @@ export type ResponseConfigDssRawData = {
   currentRatio: number;
   harga: number;
   marketCap: number;
-  nama: number;
+  nama: string;
   pbv: number;
   per: number;
   pertumbuhanLaba: number;
