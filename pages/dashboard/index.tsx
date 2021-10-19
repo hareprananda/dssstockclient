@@ -51,13 +51,13 @@ const Dashboard: Page = () => {
               #{i + 1}
             </p>
             <p className="text-2xl font-bold px-5 py-3">
-              {resultData[i].nilai.toFixed(4)}
+              {resultData[i]?.nilai?.toFixed(4)}
             </p>
           </div>
           <div className="absolute centeringElement text-5xl font-bold">
-            {resultData[i].ticker}
+            {resultData[i]?.ticker}
           </div>
-          <div className="absolute bottom-2 px-5">{resultData[i].nama}</div>
+          <div className="absolute bottom-2 px-5">{resultData[i]?.nama}</div>
         </div>
       </div>
     );

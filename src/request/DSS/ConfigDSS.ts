@@ -4,6 +4,7 @@ import {
   ConfigDssCriteria,
   ConfigDssRawData,
   ConfigDssDetailCount,
+  ConfigDssSingleStock,
 } from "./RequestDSSType";
 
 const ConfigDSS = (() => {
@@ -27,7 +28,12 @@ const ConfigDSS = (() => {
     url: `${AppConfig.V1}/detail-count`,
   });
 
-  return { result, criteria, rawData, detailCount };
+  const singleStock: ConfigDssSingleStock = (ticker) => ({
+    method: "GET",
+    url: `${AppConfig.V1}/financial/${ticker}`,
+  });
+
+  return { result, criteria, rawData, detailCount, singleStock };
 })();
 
 export default ConfigDSS;
