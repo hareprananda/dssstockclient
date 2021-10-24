@@ -45,7 +45,7 @@ const DashboardLayout: React.FC = ({ children }) => {
             alignItems: "center",
             flexDirection: "row-reverse",
             position: "fixed",
-            zIndex: 50,
+            zIndex: 20,
           }}
         >
           <div style={{ position: "absolute", top: "0", zIndex: -1 }}>

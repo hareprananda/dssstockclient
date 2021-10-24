@@ -5,6 +5,7 @@ import {
   ConfigDssRawData,
   ConfigDssDetailCount,
   ConfigDssSingleStock,
+  ConfigDssNewFinancial,
 } from "./RequestDSSType";
 
 const ConfigDSS = (() => {
@@ -33,7 +34,28 @@ const ConfigDSS = (() => {
     url: `${AppConfig.V1}/financial/${ticker}`,
   });
 
-  return { result, criteria, rawData, detailCount, singleStock };
+  const newFinancial: ConfigDssNewFinancial = (data) => {
+    const usedData = {
+      ticker: data.general.ticker,
+      tahun: data.general.tahun,
+      periode: data.general.periode,
+      lababersih: data.income["Jumlah laba (rugi)"],
+      ekuitas: data.balance["Jumlah ekuitas"],
+      utanglancar: data.balance["Jumlah liabilitas jangka pendek"],
+      asetlancar: data.balance["Jumlah aset lancar"],
+      dividen: data.dividen !== 0,
+      pembulatan: data.general.multiply,
+      currency: data.general.currency,
+    };
+
+    return {
+      method: "POST",
+      url: `${AppConfig.V1}/financial`,
+      data: usedData,
+    };
+  };
+
+  return { result, criteria, rawData, detailCount, singleStock, newFinancial };
 })();
 
 export default ConfigDSS;

@@ -33,3 +33,4 @@ img {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+@import "../src/components/Loader/Loader.css";

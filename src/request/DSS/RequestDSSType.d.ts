@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-
+import { TScreeningResult } from "src/types/File";
 type Config = AxiosRequestConfig;
 
 type RawData = {
@@ -91,3 +91,5 @@ export type ResponseDssSingleStock = {
   }[];
   status: "Not found" | "Ok";
 };
+
+export type ConfigDssNewFinancial = (data: TScreeningResult) => Config;

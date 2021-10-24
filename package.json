@@ -18,6 +18,7 @@
     "react-dom": "17.0.2",
     "react-google-login": "^5.2.2",
     "react-redux": "^7.2.5",
+    "read-excel-file": "^5.2.20",
     "sharp": "^0.29.1",
     "styled-components": "^5.3.1"
   },

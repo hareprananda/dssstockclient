@@ -8,6 +8,7 @@ module.exports = {
       current: 'currentColor',
       black: colors.black,
       white: colors.white,
+      green: colors.emerald,
       gray: colors.trueGray,
       indigo: colors.indigo,
       red: colors.rose,
@@ -30,6 +31,15 @@ module.exports = {
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
       '10xl': "0 4px 30px 8px rgba(0, 0, 0, 0.2), 0 6px 30px 8px rgba(0, 0, 0, 0.19);"
+    },
+    borderRadius: {
+      'none': '0',
+       'sm': '0.125rem',
+       DEFAULT: '0.25rem',
+      'circle': '50%',
+       'md': '0.375rem',
+       'lg': '0.5rem',
+       'full': '9999px',
     }
   },
   variants: {
