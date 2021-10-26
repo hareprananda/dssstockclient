@@ -94,7 +94,7 @@ const Ticker: React.FC = () => {
       {activeMenu === "chart" ? (
         <TickerChart detailList={detailList} />
       ) : (
-        <TickerTable detailList={detailList} setDetailList={setDetailList} />
+        <TickerTable detailList={detailList} />
       )}
     </div>
   );

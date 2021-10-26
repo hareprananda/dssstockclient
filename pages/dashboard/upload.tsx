@@ -121,6 +121,7 @@ const Upload = () => {
     if (files) {
       try {
         await readFile();
+        setReadyToUpload(true);
       } catch (err) {}
     }
     setLoading(false);

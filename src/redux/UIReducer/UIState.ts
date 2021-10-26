@@ -1,7 +1,11 @@
-const UIState = {
-  activeBottomNavbar: "home" as "home" | "list" | "upload",
+export type TypeUIState = {
+  activeBottomNavbar: "home" | "list" | "upload";
+  backdrop: boolean;
+};
+
+const UIState: TypeUIState = {
+  activeBottomNavbar: "home",
   backdrop: false,
-  mainLoader: false,
 };
 
 export default UIState;

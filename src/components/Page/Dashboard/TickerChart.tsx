@@ -34,7 +34,7 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
         },
       ],
     },
-    options: ChartDefaultOptions({ scales: "double" }),
+    options: ChartDefaultOptions,
   });
 
   const balanceChart = useChart("ticker__balance-chart", {
@@ -46,29 +46,35 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
           label: "Ekuitas",
           borderColor: "transparent",
           backgroundColor: "#0057B5",
-
+          yAxisID: "A",
           data: detailList.map((value) => value.ekuitas),
         },
         {
           label: "Aset Lancar",
           borderColor: "transparent",
           backgroundColor: "#00EC00",
-
+          yAxisID: "A",
           data: detailList.map((value) => value.asetLancar),
         },
         {
           label: "Utang Lancar",
           borderColor: "transparent",
           backgroundColor: "#f04832",
-
+          yAxisID: "A",
           data: detailList.map((value) => value.utangLancar),
         },
       ],
     },
-    options: ChartDefaultOptions({ scales: "single" }),
+    options: ChartDefaultOptions,
   });
 
   useEffect(() => {
+    let pembagi = 1;
+    if (detailList.length > 0) {
+      const pembulatan = detailList[detailList.length - 1].pembulatan;
+      if (pembulatan !== 1) pembagi = Math.pow(10, pembulatan);
+    }
+
     if (!incomeChart) return;
     incomeChart.data.labels = detailList.map((value) => value.tahun);
     incomeChart.data.datasets[0].data = detailList.map(
@@ -82,13 +88,13 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
     if (!balanceChart) return;
     balanceChart.data.labels = detailList.map((value) => value.tahun);
     balanceChart.data.datasets[0].data = detailList.map(
-      (value) => value.ekuitas
+      (value) => value.ekuitas / pembagi
     );
     balanceChart.data.datasets[1].data = detailList.map(
-      (value) => value.asetLancar
+      (value) => value.asetLancar / pembagi
     );
     balanceChart.data.datasets[2].data = detailList.map(
-      (value) => value.utangLancar
+      (value) => value.utangLancar / pembagi
     );
     balanceChart.update();
   }, [detailList]);

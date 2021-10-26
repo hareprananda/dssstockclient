@@ -1,12 +1,11 @@
 import type * as Chart from "chart.js";
-import NumberUtils from "../number/NumberUtils";
-
-interface Props {
-  scales: "single" | "double";
-}
-
-const ChartDefaultOptions = (props: Props): Chart.ChartOptions => {
-  let scales: Chart.ChartOptions["scales"] = {
+const ChartDefaultOptions: Chart.ChartOptions = {
+  responsive: true,
+  interaction: {
+    mode: "index",
+    intersect: false,
+  },
+  scales: {
     A: {
       type: "linear",
       display: true,
@@ -14,41 +13,27 @@ const ChartDefaultOptions = (props: Props): Chart.ChartOptions => {
       ticks: {
         // Include a dollar sign in the ticks
         callback: function (value) {
-          return "Rp." + NumberUtils.separator(parseInt(value as string));
+          return "Rp." + value;
         },
       },
     },
-  };
-  if (props.scales === "double") {
-    scales = {
-      ...scales,
-      B: {
-        type: "linear",
-        display: true,
-        position: "right",
-        ticks: {
-          // Include a dollar sign in the ticks
-          callback: function (value) {
-            return value + "%";
-          },
-        },
-
-        // grid line settings
-        grid: {
-          drawOnChartArea: false, // only want the grid lines for one axis to show up
+    B: {
+      type: "linear",
+      display: true,
+      position: "right",
+      ticks: {
+        // Include a dollar sign in the ticks
+        callback: function (value) {
+          return value + "%";
         },
       },
-    };
-  }
 
-  return {
-    responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
+      // grid line settings
+      grid: {
+        drawOnChartArea: false, // only want the grid lines for one axis to show up
+      },
     },
-    scales,
-  };
+  },
 };
 
 export default ChartDefaultOptions;

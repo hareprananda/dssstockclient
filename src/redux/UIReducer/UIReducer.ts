@@ -14,9 +14,6 @@ const UIReducer = createSlice({
     setBackDrop: (state, action: PayloadAction<boolean>) => {
       state.backdrop = action.payload;
     },
-    setMainLoader: (state, action: PayloadAction<boolean>) => {
-      state.mainLoader = action.payload;
-    },
   },
 });
 export default UIReducer;
