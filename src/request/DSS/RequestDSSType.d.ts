@@ -93,3 +93,32 @@ export type ResponseDssSingleStock = {
 };
 
 export type ConfigDssNewFinancial = (data: TScreeningResult) => Config;
+
+type UpdateData = {
+  ekuitas: number;
+  labaBersih: number;
+  utangLancar: number;
+  asetLancar: number;
+  tahun: number;
+  periode: number;
+};
+export type ConfigDssUpdateFinancial = (
+  ticker: string,
+  data: UpdateData
+) => Config;
+export type ResponseDssUpdateFinancial = {
+  status: string;
+  data: {
+    _id: number;
+    ticker: string;
+    tahun: number;
+    periode: number;
+    labaBersih: number;
+    ekuitas: number;
+    utangLancar: number;
+    asetLancar: number;
+    dividen: boolean;
+    pembulatan: number;
+    currency: string;
+  };
+};

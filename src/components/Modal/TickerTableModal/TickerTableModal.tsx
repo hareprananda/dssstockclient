@@ -1,13 +1,88 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Icon from "src/assets/Icon";
 import Backdrop from "src/components/Element/Backdrop/Backdrop";
+import useRequest from "src/hooks/useRequest";
+import ReducerActions from "src/redux/ReducerAction";
+import { useAppDispatch, useAppSelector } from "src/redux/ReduxHook";
+import ConfigDSS from "src/request/DSS/ConfigDSS";
+import {
+  ResponseDssSingleStock,
+  ResponseDssUpdateFinancial,
+} from "src/request/DSS/RequestDSSType";
+import NumberUtils from "src/utils/number/NumberUtils";
+
+const InputList = [
+  {
+    label: "Ekuitas",
+    name: "ekuitas",
+  },
+  {
+    label: "Laba Bersih",
+    name: "labaBersih",
+  },
+  {
+    label: "Utang Lancar",
+    name: "utangLancar",
+  },
+  {
+    label: "Aset Lancar",
+    name: "asetLancar",
+  },
+] as const;
+
+type TypeDefaultData = ResponseDssSingleStock["detail"][number];
 
 interface Props {
   open: boolean;
+  defaultData: TypeDefaultData;
   toggle: () => void;
+  onSuccess: (data: ResponseDssUpdateFinancial["data"]) => void;
 }
 
-const TickerTableModal: React.FC<Props> = ({ open, toggle }) => {
+const TickerTableModal: React.FC<Props> = ({
+  open,
+  toggle,
+  defaultData,
+  onSuccess,
+}) => {
+  const { RequestAuthenticated } = useRequest();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.ui.mainLoader);
+  const [inputData, setInputData] = useState({} as TypeDefaultData);
+
+  useEffect(() => {
+    if (!defaultData) return;
+    setInputData(defaultData);
+    console.log(defaultData);
+  }, [defaultData]);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!inputData || loading) return;
+    dispatch(ReducerActions.ui.setMainLoader(true));
+
+    RequestAuthenticated<ResponseDssUpdateFinancial>(
+      ConfigDSS.updateFinancial(router.query.ticker as string, inputData)
+    )
+      .then((res) => {
+        onSuccess(res.data.data);
+      })
+      .catch(() => {
+        alert("Oops something gone wrong");
+      })
+      .finally(() => {
+        dispatch(ReducerActions.ui.setMainLoader(false));
+        toggle();
+      });
+  };
+
+  const onChangeInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setInputData((current) => ({ ...current, [name]: parseInt(value) }));
+  };
   return (
     <>
       <Backdrop show={open} />
@@ -27,27 +102,25 @@ const TickerTableModal: React.FC<Props> = ({ open, toggle }) => {
             <Icon.CancelIcon width="22.309" height="22.309" fill="black" />
           </div>
         </div>
-
-        <form>
-          {[
-            "Ekuitas",
-            "Laba bersih",
-            "Utang Lancar",
-            "Aset Lancar",
-            "Dividen",
-          ].map((value) => (
-            <div className="mb-4 mt-2" key={value}>
+        <p className="text-primary mt-2">
+          * angka dalam {NumberUtils.pembulatan(defaultData?.pembulatan || 0)}
+        </p>
+        <form onSubmit={onSubmit}>
+          {InputList.map((value) => (
+            <div className="mb-4 mt-2" key={value.name}>
               <label
                 className="block text-black text-sm font-bold mb-2"
-                htmlFor={value}
+                htmlFor={value.name}
               >
-                {value}
+                {value.label}
               </label>
               <input
                 className="shadow appearance-none border rounded-2xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id={value}
+                id={value.name}
+                name={value.name}
+                onChange={onChangeInput}
                 type="text"
-                placeholder={value}
+                value={inputData[value.name]}
               />
             </div>
           ))}
@@ -61,8 +134,7 @@ const TickerTableModal: React.FC<Props> = ({ open, toggle }) => {
               Cancel
             </button>
             <button
-              type="button"
-              onClick={toggle}
+              type="submit"
               className="bg-primary text-white rounded px-3 py-2 font-semibold"
             >
               Update

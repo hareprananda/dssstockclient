@@ -31,6 +31,7 @@ const StatusModal: React.FC<Props> = ({
       }, 500);
     }
   }, [open]);
+
   return (
     <>
       <Backdrop show={open} />
@@ -39,7 +40,10 @@ const StatusModal: React.FC<Props> = ({
         className="fixed w-screen left-0 top-0 h-screen grid place-items-center z-30"
         style={{ transition: "opacity 0.5s", opacity: "0", display: "none" }}
       >
-        <div className="bg-white w-11/12 max-w-3xl rounded-lg overflow-hidden">
+        <div
+          style={{}}
+          className="bg-white w-11/12 max-w-3xl rounded-lg overflow-hidden"
+        >
           <div
             className={`w-full ${type === "error" && "bg-red-500"} ${
               type === "success" && "bg-green-600"
