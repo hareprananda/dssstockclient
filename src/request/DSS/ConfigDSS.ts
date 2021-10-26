@@ -6,6 +6,7 @@ import {
   ConfigDssDetailCount,
   ConfigDssSingleStock,
   ConfigDssNewFinancial,
+  ConfigDssUpdateFinancial,
 } from "./RequestDSSType";
 
 const ConfigDSS = (() => {
@@ -55,7 +56,23 @@ const ConfigDSS = (() => {
     };
   };
 
-  return { result, criteria, rawData, detailCount, singleStock, newFinancial };
+  const updateFinancial: ConfigDssUpdateFinancial = (ticker, data) => {
+    return {
+      method: "PUT",
+      url: `${AppConfig.V1}/financial/${ticker}`,
+      data,
+    };
+  };
+
+  return {
+    result,
+    criteria,
+    rawData,
+    detailCount,
+    singleStock,
+    newFinancial,
+    updateFinancial,
+  };
 })();
 
 export default ConfigDSS;

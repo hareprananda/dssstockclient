@@ -6,10 +6,12 @@ import Icon from "src/assets/Icon";
 import Link from "next/link";
 import { RouteUrl } from "src/route/RouteUrl";
 import ReducerActions from "src/redux/ReducerAction";
-import { TypeUIState } from "src/redux/UIReducer/UIState";
 import { useRouter } from "next/router";
 import LocalStorage from "src/utils/localstorage/LocalStorage";
 import useGoogleAuth from "src/hooks/useGoogleAuth";
+import UIState from "src/redux/UIReducer/UIState";
+
+type TypeUIState = typeof UIState;
 
 const DashboardLayout: React.FC = ({ children }) => {
   const {
