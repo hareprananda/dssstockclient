@@ -25,13 +25,17 @@ const Ticker: React.FC = () => {
     if (!ticker) return;
     RequestAuthenticated<ResponseDssSingleStock>(
       ConfigDSS.singleStock(ticker as string)
-    ).then(({ data }) => {
-      if (data.status === "Ok") {
-        console.log(data.summary);
-        setSummary(data.summary);
-        setDetailList(data.detail);
-      }
-    });
+    )
+      .then(({ data }) => {
+        if (data.status === "Ok") {
+          console.log(data.summary);
+          setSummary(data.summary);
+          setDetailList(data.detail);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [ticker]);
   return (
     <div>

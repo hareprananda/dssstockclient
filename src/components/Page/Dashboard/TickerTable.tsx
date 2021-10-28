@@ -107,7 +107,10 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
         toggle={toggleModal}
       />
       {detailList.length > 0 && (
-        <p className="text-primary">* disajikan dalam juta</p>
+        <p className="text-primary">
+          * disajikan dalam{" "}
+          {NumberUtils.pembulatan(detailList[detailList.length - 1].pembulatan)}
+        </p>
       )}
       <table className="w-full mt-5">
         <thead>
