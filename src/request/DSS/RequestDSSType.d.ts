@@ -92,7 +92,10 @@ export type ResponseDssSingleStock = {
   status: "Not found" | "Ok";
 };
 
-export type ConfigDssNewFinancial = (data: TScreeningResult) => Config;
+export type ConfigDssNewFinancial = (
+  data: TScreeningResult,
+  additional: { harga: number; jumlahSaham: number }
+) => Config;
 
 type UpdateData = {
   ekuitas: number;

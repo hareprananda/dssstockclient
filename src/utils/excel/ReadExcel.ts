@@ -54,7 +54,11 @@ const ReadExcel = ({ path }: { path: File }) => {
         if (row[0] == null) {
           return true;
         }
-        if (row[0] != null && row[0].match(/Kode entitas/g)) {
+        if (row[0].match(/Nama entitas/g)) {
+          const mantap: any = [];
+          mantap["nama"] = row[1];
+          jason = { ...jason, ...mantap };
+        } else if (row[0] != null && row[0].match(/Kode entitas/g)) {
           const mantap: any = [];
           mantap["ticker"] = row[1] == null ? 0 : row[1];
           jason = { ...jason, ...mantap };

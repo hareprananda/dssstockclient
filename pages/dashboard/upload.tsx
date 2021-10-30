@@ -3,6 +3,7 @@ import Icon from "src/assets/Icon";
 import withProtected from "src/components/Element/Route/HighOrder/withProtected";
 import Loader from "src/components/Loader/Loader";
 import StatusModal from "src/components/Modal/StatusModal/StatusModal";
+import NewCompanyModal from "src/components/Modal/NewCompanyModal/NewCompanyModal";
 import useRequest from "src/hooks/useRequest";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import { TScreeningResult } from "src/types/File";
@@ -19,9 +20,18 @@ const Upload = () => {
   const [uploadStatus, setUploadStatus] = useState<"success" | "error">(
     "success"
   );
-  const [openModal, setOpenModal] = useState(false);
+  const [openErrorModal, setOpenErrorModal] = useState(false);
+  const [openNewCompanyModal, setOpenNewCompanyModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  //state for new company that need to upload price and number of shares
+  const [additionalData, setAdditionalData] = useState({
+    harga: 0,
+    jumlahSaham: 0,
+    newCompanyTicker: "",
+    newCompanyName: "",
+  });
   const { RequestAuthenticated } = useRequest();
   const clickTooltip = () => {
     const tooltipEl = document.querySelector("#upload__tooltip");
@@ -73,7 +83,7 @@ const Upload = () => {
 
       setReadyToUpload(true);
     } catch (_) {
-      toggleModal();
+      toggleErrorModal();
       setModalMessage("File yang anda upload salah");
     }
   };
@@ -126,45 +136,103 @@ const Upload = () => {
     setLoading(false);
   };
 
+  const finishRequest = () => {
+    setLoading(false);
+    setReadyToUpload(false);
+    cleanFile();
+  };
+
   const uploadFile = () => {
     setLoading(true);
+    const { harga, jumlahSaham } = additionalData;
     RequestAuthenticated(
-      ConfigDSS.newFinancial(screeningData.current as TScreeningResult)
+      ConfigDSS.newFinancial(screeningData.current as TScreeningResult, {
+        harga,
+        jumlahSaham,
+      })
     )
       .then((res) => {
         console.log(res);
-        setOpenModal(true);
+        setOpenErrorModal(true);
         setUploadStatus("success");
         const data = screeningData.current as TScreeningResult;
         setModalMessage(
           `Laporan keuangan ${data.general.ticker} periode ${data.general.periode} ${data.general.tahun} berhasil dikirim ke server`
         );
+        setAdditionalData((current) => ({
+          ...current,
+          harga: 0,
+          jumlahSaham: 0,
+        }));
+        finishRequest();
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          setOpenModal(true);
-          setModalMessage(err.response.data.error);
+          const errorMessage = err.response.data.error;
+          if (/amount of stock/g.test(errorMessage)) {
+            setAdditionalData((current) => ({
+              ...current,
+              newCompanyName: screeningData.current?.general.nama as string,
+              newCompanyTicker: screeningData.current?.general.ticker as string,
+            }));
+            setLoading(false);
+            toggleNewCompanyModal();
+          } else {
+            setOpenErrorModal(true);
+            setModalMessage(errorMessage);
+            finishRequest();
+          }
         }
         setUploadStatus("error");
-      })
-      .finally(() => {
-        setLoading(false);
-        setReadyToUpload(false);
-        cleanFile();
       });
   };
 
-  const toggleModal = () => {
-    setOpenModal((current) => !current);
+  const toggleErrorModal = () => {
+    setOpenErrorModal((current) => !current);
   };
+
+  const toggleNewCompanyModal = () => {
+    setOpenNewCompanyModal((current) => !current);
+  };
+
+  const onCancelAddSharePrice = () => {
+    finishRequest();
+    toggleNewCompanyModal();
+  };
+  const onSubmitAddSharePrice = (data: {
+    harga: number;
+    jumlahSaham: number;
+  }) => {
+    const { harga, jumlahSaham } = data;
+    setAdditionalData((current) => ({
+      ...current,
+      harga,
+      jumlahSaham,
+    }));
+  };
+
+  useEffect(() => {
+    if (Object.values(additionalData).includes(0)) return;
+    uploadFile();
+  }, [additionalData]);
   return (
     <div className="mt-28">
       <StatusModal
         title={uploadStatus === "error" ? "Oops" : "Sukses"}
         type={uploadStatus}
         text={modalMessage}
-        open={openModal}
-        toggleModal={toggleModal}
+        open={openErrorModal}
+        toggleModal={toggleErrorModal}
+      />
+      <NewCompanyModal
+        onCancel={onCancelAddSharePrice}
+        onSubmit={onSubmitAddSharePrice}
+        toggle={toggleNewCompanyModal}
+        open={openNewCompanyModal}
+        data={{
+          nama: additionalData.newCompanyName,
+          ticker: additionalData.newCompanyTicker,
+        }}
       />
       <div className="flex justify-between items-center relative">
         <h1 className="text-primary text-2xl font-bold">

@@ -7,6 +7,7 @@ export type TScreeningResult = {
     periode: number;
     currency: "IDR" | "USD";
     multiply: number;
+    nama: string;
   };
   income: {
     "Penjualan dan pendapatan usaha": number;
