@@ -1,11 +1,17 @@
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
+import Icon from "src/assets/Icon";
 import withProtected from "src/components/Element/Route/HighOrder/withProtected";
+import CompanyModal from "src/components/Modal/CompanyModal/CompanyModal";
+import ConfirmationModal from "src/components/Modal/ConfirmationModal/ConfirmationModal";
 import TickerChart from "src/components/Page/Dashboard/TickerChart";
 import TickerTable from "src/components/Page/Dashboard/TickerTable";
 import useRequest from "src/hooks/useRequest";
+import ConfigCompany from "src/request/Company/ConfigCompany";
+import { CompanyData } from "src/request/Company/RequestCompanyType";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import { ResponseDssSingleStock } from "src/request/DSS/RequestDSSType";
+import { RouteUrl } from "src/route/RouteUrl";
 
 const Ticker: React.FC = () => {
   const router = useRouter();
@@ -18,11 +24,11 @@ const Ticker: React.FC = () => {
   const [detailList, setDetailList] = useState(
     [] as ResponseDssSingleStock["detail"]
   );
-
+  const [openUpdateCompanyModal, setOpenUpdateCompanyModal] = useState(false);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const { RequestAuthenticated } = useRequest();
 
-  useEffect(() => {
-    if (!ticker) return;
+  const getSingleData = () => {
     RequestAuthenticated<ResponseDssSingleStock>(
       ConfigDSS.singleStock(ticker as string)
     )
@@ -36,12 +42,83 @@ const Ticker: React.FC = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    if (!ticker) return;
+    getSingleData();
   }, [ticker]);
+
+  const toggleCompanyModal = () => {
+    setOpenUpdateCompanyModal((current) => !current);
+  };
+
+  const updateCompanySuccess = (data: CompanyData) => {
+    setSummary((current) => ({
+      ...current,
+      harga: data.harga,
+      marketCap: data.harga * data.jumlahSaham,
+      nama: data.nama,
+    }));
+  };
+
+  const toggleOpenDeleteConfirmation = () => {
+    setOpenDeleteConfirmation((current) => !current);
+  };
+  const deleteCompany = () => {
+    RequestAuthenticated(ConfigCompany.erase(summary?._id))
+      .then(() => {
+        alert("Delete success");
+        toggleOpenDeleteConfirmation();
+        router.push(RouteUrl.list);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        toggleOpenDeleteConfirmation();
+      });
+  };
   return (
     <div>
-      <h1 className="text-4xl font-bold text-primary mt-20">
-        {router.query.ticker}
-      </h1>
+      <CompanyModal
+        successCB={updateCompanySuccess}
+        open={openUpdateCompanyModal}
+        toggle={toggleCompanyModal}
+        defaultData={{
+          _id: summary?._id,
+          nama: summary?.nama,
+          jumlahSaham: summary?.marketCap / summary?.harga,
+          harga: summary?.harga,
+        }}
+      />
+      <ConfirmationModal
+        open={openDeleteConfirmation}
+        toggle={toggleOpenDeleteConfirmation}
+        title="Konfirmasi"
+        description={`Apakah anda yakin ingin menghapus data ${summary?._id} (${summary?.nama}) beserta semua laporan keuangannya ?`}
+        onSuccess={deleteCompany}
+      />
+      <div className="flex items-center  mt-20">
+        <h1 className="text-4xl font-bold text-primary">
+          {router.query.ticker}
+        </h1>
+        <button
+          type="button"
+          className="py-1 px-4 bg-primary ml-2 rounded"
+          onClick={toggleCompanyModal}
+        >
+          <Icon.Edit fill="white" width="25" height="25" />
+        </button>
+        <button
+          type="button"
+          className="py-1 px-4 bg-red-600 ml-2 rounded"
+          onClick={toggleOpenDeleteConfirmation}
+        >
+          <Icon.Delete fill="white" width="25" height="25" />
+        </button>
+      </div>
+
       <p className="text-primary">{summary.nama}</p>
 
       <div className="flex mt-5">

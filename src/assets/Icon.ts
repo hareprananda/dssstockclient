@@ -10,6 +10,8 @@ import ArrowUp from "assets/svg/arrow_up.svg";
 import ArrowDown from "assets/svg/arrow_down.svg";
 import Close from "assets/svg/ic_close.svg";
 import Check from "assets/svg/check_icon.svg";
+import Edit from "assets/svg/edit_icon.svg";
+import Delete from "assets/svg/delete_icon.svg";
 
 const Icon = {
   UploadIcon,
@@ -23,6 +25,8 @@ const Icon = {
   Search: SearchIcon,
   Close,
   Check,
+  Edit,
+  Delete,
 
   ArrowUp,
   ArrowDown,

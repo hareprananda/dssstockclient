@@ -112,6 +112,7 @@ const List = () => {
         >
           <Icon.Search fill="#9E9E9E" className="mr-2" />
           <input
+            value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="text-xl border-none focus:outline-none h-full flex-auto bg-transparent"
           />
