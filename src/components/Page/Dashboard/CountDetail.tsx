@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import BobotModal from "src/components/Modal/BobotModal/BobotModal";
 import useRequest from "src/hooks/useRequest";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import {
@@ -74,7 +75,7 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
     }[]
   >([]);
   const [numberOfFinalRankingData, setNumberOfFinalRankingData] = useState(0);
-
+  const [openCriteriaModal, setOpenCriteriaModal] = useState(false);
   useEffect(() => {
     RequestAuthenticated(ConfigDSS.criteria()).then((res) => {
       setCriteriaList(res.data);
@@ -258,8 +259,16 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
       </tr>
     );
   }
+  const toggleBobotModal = () => {
+    setOpenCriteriaModal((current) => !current);
+  };
   return (
     <div className="mt-10">
+      <BobotModal
+        open={openCriteriaModal}
+        setOpen={setOpenCriteriaModal}
+        currentCriteria={criteriaList}
+      />
       <div>
         <span className="text-3xl bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
           1. Bobot
@@ -304,6 +313,14 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
             </tr>
           </tbody>
         </table>
+        <div className="flex flex-row-reverse">
+          <button
+            onClick={toggleBobotModal}
+            className="bg-primary text-white px-5 py-2 text-lg rounded font-bold mt-5"
+          >
+            Update Bobot
+          </button>
+        </div>
       </div>
       <div className="mt-10">
         <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
@@ -383,49 +400,49 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
             <tr className="border-b-2 border-gray-300">
               <td className="p-2 font-bold text-primary ">MAX</td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.marketCap}
+                {idealSolutionData?.positif.marketCap?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.currentRatio}
+                {idealSolutionData?.positif.currentRatio?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.adanyaLaba}
+                {idealSolutionData?.positif.adanyaLaba?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.adanyaDividen}
+                {idealSolutionData?.positif.adanyaDividen?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.pertumbuhanLaba}
+                {idealSolutionData?.positif.pertumbuhanLaba?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.per}
+                {idealSolutionData?.positif.per?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.positif.pbv}
+                {idealSolutionData?.positif.pbv?.toFixed(3)}
               </td>
             </tr>
             <tr className="border-b-2 border-gray-300">
               <td className="p-2 font-bold text-primary ">MIN</td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.marketCap}
+                {idealSolutionData?.negatif.marketCap?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.currentRatio}
+                {idealSolutionData?.negatif.currentRatio?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.adanyaLaba}
+                {idealSolutionData?.negatif.adanyaLaba?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.adanyaDividen}
+                {idealSolutionData?.negatif.adanyaDividen?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.pertumbuhanLaba}
+                {idealSolutionData?.negatif.pertumbuhanLaba?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.per}
+                {(idealSolutionData?.negatif.per as number)?.toFixed(3)}
               </td>
               <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.pbv}
+                {(idealSolutionData?.negatif.pbv as number)?.toFixed(3)}
               </td>
             </tr>
           </tbody>

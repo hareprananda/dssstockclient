@@ -34,7 +34,6 @@ const Ticker: React.FC = () => {
     )
       .then(({ data }) => {
         if (data.status === "Ok") {
-          console.log(data.summary);
           setSummary(data.summary);
           setDetailList(data.detail);
         }

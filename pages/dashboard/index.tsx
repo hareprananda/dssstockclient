@@ -6,6 +6,8 @@ import useRequest from "src/hooks/useRequest";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import { ResponseDssResult } from "src/request/DSS/RequestDSSType";
 import CountDetail from "src/components/Page/Dashboard/CountDetail";
+import { useAppDispatch, useAppSelector } from "src/redux/ReduxHook";
+import ReducerActions from "src/redux/ReducerAction";
 
 const Dashboard: Page = () => {
   const [currentDate, setCurrentDate] = useState("");
@@ -13,15 +15,21 @@ const Dashboard: Page = () => {
   const [resultData, setResultData] = useState<ResponseDssResult>([]);
   const [resultBoxLimit, setResultBoxLimit] = useState(0);
   const [showCountDetail, setShowCountDetail] = useState(false);
+  const { requestCountDss } = useAppSelector((state) => state.request);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(ReducerActions.ui.setMainLoader(true));
     RequestAuthenticated<ResponseDssResult>(ConfigDSS.result())
       .then((res) => {
         setResultData(res.data);
         setResultBoxLimit(10);
       })
-      .catch(() => null);
-  }, []);
+      .catch(() => null)
+      .finally(() => {
+        dispatch(ReducerActions.ui.setMainLoader(false));
+      });
+  }, [requestCountDss]);
 
   useEffect(() => {
     const currentString = new Date().toLocaleString("en-US", {
@@ -108,7 +116,10 @@ const Dashboard: Page = () => {
         <div className="grid grid-cols-6 gap-5 mt-8">{resultBox}</div>
       </div>
       {showCountDetail && (
-        <CountDetail numberOfDataOptionList={numberOfDataOptionList} />
+        <CountDetail
+          key={requestCountDss}
+          numberOfDataOptionList={numberOfDataOptionList}
+        />
       )}
       <button
         onClick={() => setShowCountDetail((current) => !current)}

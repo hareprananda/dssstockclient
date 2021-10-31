@@ -125,3 +125,7 @@ export type ResponseDssUpdateFinancial = {
     currency: string;
   };
 };
+
+export type ConfigDssUpdateCriteria = (
+  data: { _id: number; keterangan: string; bobot: number }[]
+) => Config;

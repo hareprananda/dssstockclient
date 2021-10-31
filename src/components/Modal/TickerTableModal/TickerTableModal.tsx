@@ -55,7 +55,6 @@ const TickerTableModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultData) return;
     setInputData(defaultData);
-    console.log(defaultData);
   }, [defaultData]);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

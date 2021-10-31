@@ -7,6 +7,7 @@ import {
   ConfigDssSingleStock,
   ConfigDssNewFinancial,
   ConfigDssUpdateFinancial,
+  ConfigDssUpdateCriteria,
 } from "./RequestDSSType";
 
 const ConfigDSS = (() => {
@@ -63,6 +64,14 @@ const ConfigDSS = (() => {
     };
   };
 
+  const updateCriteria: ConfigDssUpdateCriteria = (data) => {
+    return {
+      method: "PUT",
+      url: `${AppConfig.V1}/criteria`,
+      data,
+    };
+  };
+
   return {
     result,
     criteria,
@@ -71,6 +80,7 @@ const ConfigDSS = (() => {
     singleStock,
     newFinancial,
     updateFinancial,
+    updateCriteria,
   };
 })();
 
