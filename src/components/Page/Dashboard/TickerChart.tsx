@@ -12,16 +12,12 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
   const incomeChart = useChart("ticker__income-chart", {
     type: "bar",
     data: {
-      labels: detailList.map((value) => value.tahun),
+      labels: detailList.map((value) =>
+        value.periode === 4
+          ? value.tahun
+          : `${value.tahun} kuartal ${value.periode}`
+      ),
       datasets: [
-        {
-          label: "Laba bersih",
-          backgroundColor: "#0057B5",
-          yAxisID: "A",
-          borderWidth: 2,
-          barThickness: 100,
-          data: detailList.map((value) => value.labaBersih),
-        },
         {
           type: "line",
           label: "Pertumbuhan laba",
@@ -32,6 +28,14 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
           fill: false,
           data: detailList.map((value) => value.pertumbuhanLaba),
         },
+        {
+          label: "Laba bersih",
+          backgroundColor: "#0057B5",
+          yAxisID: "A",
+          borderWidth: 2,
+          barThickness: 100,
+          data: detailList.map((value) => value.labaBersih),
+        },
       ],
     },
     options: ChartDefaultOptions({ scales: "double" }),
@@ -40,7 +44,11 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
   const balanceChart = useChart("ticker__balance-chart", {
     type: "bar",
     data: {
-      labels: detailList.map((value) => value.tahun),
+      labels: detailList.map((value) =>
+        value.periode === 4
+          ? value.tahun
+          : `${value.tahun} kuartal ${value.periode}`
+      ),
       datasets: [
         {
           label: "Ekuitas",
@@ -70,17 +78,26 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
 
   useEffect(() => {
     if (!incomeChart) return;
-    incomeChart.data.labels = detailList.map((value) => value.tahun);
-    incomeChart.data.datasets[0].data = detailList.map(
-      (value) => value.labaBersih
+    incomeChart.data.labels = detailList.map((value) =>
+      value.periode === 4
+        ? value.tahun
+        : `${value.tahun} kuartal ${value.periode}`
     );
-    incomeChart.data.datasets[1].data = detailList.map(
+    incomeChart.data.datasets[0].data = detailList.map(
       (value) => value.pertumbuhanLaba
     );
+    incomeChart.data.datasets[1].data = detailList.map(
+      (value) => value.labaBersih
+    );
+
     incomeChart.update();
 
     if (!balanceChart) return;
-    balanceChart.data.labels = detailList.map((value) => value.tahun);
+    balanceChart.data.labels = detailList.map((value) =>
+      value.periode === 4
+        ? value.tahun
+        : `${value.tahun} kuartal ${value.periode}`
+    );
     balanceChart.data.datasets[0].data = detailList.map(
       (value) => value.ekuitas
     );
