@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import withProtected from "src/components/Element/Route/HighOrder/withProtected";
 import { Page } from "src/types/Page";
 import DateHelper from "src/utils/date/DateHelper";
@@ -16,12 +16,14 @@ const Dashboard: Page = () => {
   const [resultBoxLimit, setResultBoxLimit] = useState(0);
   const [showCountDetail, setShowCountDetail] = useState(false);
   const { requestCountDss } = useAppSelector((state) => state.request);
+  const [search, setSearch] = useState("");
   const dispatch = useAppDispatch();
-
+  const fullResultData = useRef<ResponseDssResult>([]);
   useEffect(() => {
     dispatch(ReducerActions.ui.setMainLoader(true));
     RequestAuthenticated<ResponseDssResult>(ConfigDSS.result())
       .then((res) => {
+        fullResultData.current = res.data;
         setResultData(res.data);
         setResultBoxLimit(10);
       })
@@ -45,8 +47,21 @@ const Dashboard: Page = () => {
     );
   }, []);
 
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    const newData = fullResultData.current.filter(
+      (result) =>
+        result.nama.toLowerCase().includes(search.toLowerCase()) ||
+        result.ticker.toLowerCase().includes(search.toLowerCase())
+    );
+    setResultData(newData);
+  }, [search]);
   const resultBox: JSX.Element[] = [];
   for (let i = 0; i < resultBoxLimit; i++) {
+    if (!resultData[i]) break;
     resultBox.push(
       <div
         key={i}
@@ -79,7 +94,7 @@ const Dashboard: Page = () => {
     }
     return (
       <select
-        defaultValue={10}
+        value={resultBoxLimit}
         onChange={onChange}
         className="block appearance-none bg-primary bg-opacity-20 border font-bold border-gray-200 text-primary py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
       >
@@ -102,6 +117,7 @@ const Dashboard: Page = () => {
 
       <div className="grid place-items-center mt-8">
         <input
+          onChange={onChangeSearch}
           placeholder="Search..."
           className="focus:outline-none w-2/5 text-darkPrimary px-3 py-1 mx-auto bg-softPrimary2 border-primary border-2 rounded-xl text-2xl shadow-10xl"
         />

@@ -128,7 +128,9 @@ const Ticker: React.FC = () => {
           </p>
         </div>
         <div className="text-center ml-10">
-          <p className="font-bold text-2xl text-primary">PER</p>
+          <p className="font-bold text-2xl text-primary">
+            PER Rata-rata 2 tahun
+          </p>
           <p className="text-center text-xl text-primary">
             {(summary.per || 0).toFixed(2)} x
           </p>
