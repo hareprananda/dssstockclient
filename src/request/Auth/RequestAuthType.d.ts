@@ -6,6 +6,7 @@ export type ConfigAuthLogin = ({ email: string }) => Config;
 export type ResponseAuthLogin = {
   token: string;
   expiry: number;
+  level: "admin" | "pengguna";
 };
 
 export type ResponseGoogleLogin = {

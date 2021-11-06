@@ -12,6 +12,7 @@ import { CompanyData } from "src/request/Company/RequestCompanyType";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import { ResponseDssSingleStock } from "src/request/DSS/RequestDSSType";
 import { RouteUrl } from "src/route/RouteUrl";
+import LocalStorage from "src/utils/localstorage/LocalStorage";
 
 const Ticker: React.FC = () => {
   const router = useRouter();
@@ -78,6 +79,7 @@ const Ticker: React.FC = () => {
         toggleOpenDeleteConfirmation();
       });
   };
+  const userData = LocalStorage.get("user_data");
   return (
     <div>
       <CompanyModal
@@ -102,20 +104,24 @@ const Ticker: React.FC = () => {
         <h1 className="text-4xl font-bold text-primary">
           {router.query.ticker}
         </h1>
-        <button
-          type="button"
-          className="py-1 px-4 bg-primary ml-2 rounded"
-          onClick={toggleCompanyModal}
-        >
-          <Icon.Edit fill="white" width="25" height="25" />
-        </button>
-        <button
-          type="button"
-          className="py-1 px-4 bg-red-600 ml-2 rounded"
-          onClick={toggleOpenDeleteConfirmation}
-        >
-          <Icon.Delete fill="white" width="25" height="25" />
-        </button>
+        {userData?.level === "admin" && (
+          <>
+            <button
+              type="button"
+              className="py-1 px-4 bg-primary ml-2 rounded"
+              onClick={toggleCompanyModal}
+            >
+              <Icon.Edit fill="white" width="25" height="25" />
+            </button>
+            <button
+              type="button"
+              className="py-1 px-4 bg-red-600 ml-2 rounded"
+              onClick={toggleOpenDeleteConfirmation}
+            >
+              <Icon.Delete fill="white" width="25" height="25" />
+            </button>
+          </>
+        )}
       </div>
 
       <p className="text-primary">{summary.nama}</p>

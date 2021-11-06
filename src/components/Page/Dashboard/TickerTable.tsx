@@ -5,6 +5,7 @@ import {
   ResponseDssSingleStock,
   ResponseDssUpdateFinancial,
 } from "src/request/DSS/RequestDSSType";
+import LocalStorage from "src/utils/localstorage/LocalStorage";
 import NumberUtils from "src/utils/number/NumberUtils";
 
 interface Props {
@@ -91,6 +92,7 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
     }
   };
 
+  const userData = LocalStorage.get("user_data");
   return (
     <div>
       <StatusModal
@@ -119,7 +121,9 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
             {detailListState.map((data) => (
               <td className="w-1/5 p-2" key={data._id}>
                 <span
-                  onClick={() => chooseUpdate(data._id)}
+                  onClick={() =>
+                    userData?.level === "admin" && chooseUpdate(data._id)
+                  }
                   className="bg-primary text-white text-xl px-4 py-1 rounded cursor-pointer"
                 >
                   Kuartal {romanize(data.periode)} {data.tahun}

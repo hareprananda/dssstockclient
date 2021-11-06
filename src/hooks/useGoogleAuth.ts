@@ -21,6 +21,7 @@ const onLoginSuccess = (router: NextRouter) => (res: any) => {
         name: profileObj.name,
         token: res.data.token,
         token_expiry: res.data.expiry,
+        level: res.data.level,
       });
       router.push(RouteUrl.dashboard);
     })

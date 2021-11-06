@@ -96,18 +96,20 @@ const DashboardLayout: React.FC = ({ children }) => {
               />
             </a>
           </Link>
-          <Link href={RouteUrl.upload}>
-            <a
-              onClick={changeNavbar("upload")}
-              className={`px-5 pb-2 pt-4 ${
-                activeBottomNavbar === "upload" && "bg-white"
-              }`}
-            >
-              <Icon.UploadIcon
-                fill={activeBottomNavbar === "upload" ? "#0057b5" : "white"}
-              />
-            </a>
-          </Link>
+          {userData?.level === "admin" && (
+            <Link href={RouteUrl.upload}>
+              <a
+                onClick={changeNavbar("upload")}
+                className={`px-5 pb-2 pt-4 ${
+                  activeBottomNavbar === "upload" && "bg-white"
+                }`}
+              >
+                <Icon.UploadIcon
+                  fill={activeBottomNavbar === "upload" ? "#0057b5" : "white"}
+                />
+              </a>
+            </Link>
+          )}
           <div className={`px-5 pb-2 pt-4 cursor-pointer`} onClick={signOut}>
             <Icon.LogoutIcon fill="white" />
           </div>
