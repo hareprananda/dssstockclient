@@ -39,9 +39,7 @@ const Ticker: React.FC = () => {
           setDetailList(data.detail);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(() => null);
   };
 
   useEffect(() => {
@@ -72,9 +70,7 @@ const Ticker: React.FC = () => {
         toggleOpenDeleteConfirmation();
         router.push(RouteUrl.list);
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch(() => null)
       .finally(() => {
         toggleOpenDeleteConfirmation();
       });

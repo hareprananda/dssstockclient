@@ -17,7 +17,6 @@ interface Props {
 
 const romanize = (angka: number) => {
   const roman = ["I", "II", "III", "IV"];
-  console.log(angka);
   return roman[angka - 1];
 };
 

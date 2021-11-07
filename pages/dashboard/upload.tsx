@@ -151,8 +151,7 @@ const Upload = () => {
         jumlahSaham,
       })
     )
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setOpenErrorModal(true);
         setUploadStatus("success");
         const data = screeningData.current as TScreeningResult;
