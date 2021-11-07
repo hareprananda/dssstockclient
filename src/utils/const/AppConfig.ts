@@ -1,5 +1,5 @@
 const AppConfig = {
-  V1: "http://localhost:5000/api/v1",
+  V1: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`,
 };
 
 export default AppConfig;
