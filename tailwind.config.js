@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const colors = require('tailwindcss/colors')
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}','./src/layout/**/*.{js,ts,jsx,tsx}'],
