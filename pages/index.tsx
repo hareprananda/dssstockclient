@@ -9,14 +9,19 @@ const Login: Page = () => {
 
   return (
     <div>
-      <h1 className="text-7xl text-primary font-bold mt-9">login</h1>
-      <p className="text-2xl text-primary max-w-3xl mt-5">
+      <h1 className="text-5xl md:text-7xl text-primary font-bold mt-9">
+        login
+      </h1>
+      <p className="text-xl sm:text-2xl text-primary max-w-3xl mt-5">
         Sistem Pendukung Keputusan Perangkingan Saham
         <br />
         Berdasarkan Value Investing dengan menggunakan metode TOPSIS
       </p>
 
-      <Button className="bg-primary text-white text-2xl mt-16" onClick={signIn}>
+      <Button
+        className="bg-primary text-white text-xl sm:text-2xl mt-16 mx-auto sm:mx-0"
+        onClick={signIn}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"

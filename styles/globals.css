@@ -34,3 +34,4 @@ img {
   transform: translate(-50%, -50%);
 }
 @import "../src/components/Loader/Loader.css";
+@import "../src/components/layout/InitialLayout.css";

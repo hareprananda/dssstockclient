@@ -12,6 +12,7 @@ import Close from "assets/svg/ic_close.svg";
 import Check from "assets/svg/check_icon.svg";
 import Edit from "assets/svg/edit_icon.svg";
 import Delete from "assets/svg/delete_icon.svg";
+import BarMenu from "assets/svg/bar_menu.svg";
 
 const Icon = {
   UploadIcon,
@@ -27,6 +28,7 @@ const Icon = {
   Check,
   Edit,
   Delete,
+  BarMenu,
 
   ArrowUp,
   ArrowDown,
