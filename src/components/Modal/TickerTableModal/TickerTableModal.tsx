@@ -11,6 +11,7 @@ import {
   ResponseDssUpdateFinancial,
 } from "src/request/DSS/RequestDSSType";
 import NumberUtils from "src/utils/number/NumberUtils";
+import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 
 const InputList = [
   {
@@ -51,6 +52,7 @@ const TickerTableModal: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.ui.mainLoader);
   const [inputData, setInputData] = useState({} as TypeDefaultData);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   useEffect(() => {
     if (!defaultData) return;
@@ -76,14 +78,38 @@ const TickerTableModal: React.FC<Props> = ({
       });
   };
 
+  const toggleOpenConfirmation = () => {
+    setOpenConfirmation((current) => !current);
+  };
+
   const onChangeInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setInputData((current) => ({ ...current, [name]: parseInt(value) }));
   };
+  const deleteSuccess = () => {
+    dispatch(ReducerActions.ui.setMainLoader(true));
+
+    RequestAuthenticated(ConfigDSS.eraseFinancial(defaultData._id))
+      .then(() => {
+        dispatch(ReducerActions.request.reRequestTickerDetail());
+        toggle();
+        toggleOpenConfirmation();
+      })
+      .catch(() => {
+        alert("Oops something gone wrong");
+      });
+  };
   return (
     <>
+      <ConfirmationModal
+        title="Konfirmasi"
+        description="Apakah anda yakin ingin menghapus laporan keuangan ini ?"
+        open={openConfirmation}
+        toggle={toggleOpenConfirmation}
+        onSuccess={deleteSuccess}
+      />
       <Backdrop show={open} />
       <div
         style={{
@@ -130,18 +156,27 @@ const TickerTableModal: React.FC<Props> = ({
 
           <div className="flex justify-between py-3">
             <button
-              className="text-primary bg-softPrimary2 rounded px-3 py-2 font-semibold"
+              className="text-gray-50 bg-red-500 rounded px-3 py-2 font-semibold"
               type="button"
-              onClick={toggle}
+              onClick={toggleOpenConfirmation}
             >
-              Cancel
+              Hapus
             </button>
-            <button
-              type="submit"
-              className="bg-primary text-white rounded px-3 py-2 font-semibold"
-            >
-              Update
-            </button>
+            <div className="flex">
+              <button
+                className="text-primary bg-softPrimary2 rounded px-3 py-2 font-semibold"
+                type="button"
+                onClick={toggle}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-primary text-white rounded px-3 py-2 font-semibold ml-2"
+              >
+                Update
+              </button>
+            </div>
           </div>
         </form>
       </div>

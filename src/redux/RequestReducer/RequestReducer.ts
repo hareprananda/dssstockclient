@@ -8,6 +8,9 @@ const RequestReducer = createSlice({
     reRequestCountDss: (state) => {
       state.requestCountDss = state.requestCountDss + 1;
     },
+    reRequestTickerDetail: (state) => {
+      state.requestTickerDetail = state.requestTickerDetail + 1;
+    },
   },
 });
 

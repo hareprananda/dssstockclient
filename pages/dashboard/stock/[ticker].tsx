@@ -7,6 +7,8 @@ import ConfirmationModal from "src/components/Modal/ConfirmationModal/Confirmati
 import TickerChart from "src/components/Page/Dashboard/TickerChart";
 import TickerTable from "src/components/Page/Dashboard/TickerTable";
 import useRequest from "src/hooks/useRequest";
+import ReducerActions from "src/redux/ReducerAction";
+import { useAppDispatch, useAppSelector } from "src/redux/ReduxHook";
 import ConfigCompany from "src/request/Company/ConfigCompany";
 import { CompanyData } from "src/request/Company/RequestCompanyType";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
@@ -28,8 +30,13 @@ const Ticker: React.FC = () => {
   const [openUpdateCompanyModal, setOpenUpdateCompanyModal] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const { RequestAuthenticated } = useRequest();
+  const requestTickerDetail = useAppSelector(
+    (state) => state.request.requestTickerDetail
+  );
+  const dispatch = useAppDispatch();
 
   const getSingleData = () => {
+    dispatch(ReducerActions.ui.setMainLoader(true));
     RequestAuthenticated<ResponseDssSingleStock>(
       ConfigDSS.singleStock(ticker as string)
     )
@@ -39,13 +46,16 @@ const Ticker: React.FC = () => {
           setDetailList(data.detail);
         }
       })
-      .catch(() => null);
+      .catch(() => null)
+      .finally(() => {
+        dispatch(ReducerActions.ui.setMainLoader(false));
+      });
   };
 
   useEffect(() => {
     if (!ticker) return;
     getSingleData();
-  }, [ticker]);
+  }, [ticker, requestTickerDetail]);
 
   const toggleCompanyModal = () => {
     setOpenUpdateCompanyModal((current) => !current);

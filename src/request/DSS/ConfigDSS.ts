@@ -8,6 +8,7 @@ import {
   ConfigDssNewFinancial,
   ConfigDssUpdateFinancial,
   ConfigDssUpdateCriteria,
+  ConfigDssEraseFinancial,
 } from "./RequestDSSType";
 
 const ConfigDSS = (() => {
@@ -72,6 +73,13 @@ const ConfigDSS = (() => {
     };
   };
 
+  const eraseFinancial: ConfigDssEraseFinancial = (id) => {
+    return {
+      method: "DELETE",
+      url: `${AppConfig.V1}/financial/${id}`,
+    };
+  };
+
   return {
     result,
     criteria,
@@ -81,6 +89,7 @@ const ConfigDSS = (() => {
     newFinancial,
     updateFinancial,
     updateCriteria,
+    eraseFinancial,
   };
 })();
 

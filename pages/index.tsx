@@ -8,7 +8,7 @@ const Login: Page = () => {
   const { signIn } = useGoogleAuth();
 
   return (
-    <div>
+    <div className="relative z-10">
       <h1 className="text-5xl md:text-7xl text-primary font-bold mt-9">
         login
       </h1>

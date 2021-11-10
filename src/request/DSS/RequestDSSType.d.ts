@@ -129,3 +129,5 @@ export type ResponseDssUpdateFinancial = {
 export type ConfigDssUpdateCriteria = (
   data: { _id: number; keterangan: string; bobot: number }[]
 ) => Config;
+
+export type ConfigDssEraseFinancial = (id: number) => Config;

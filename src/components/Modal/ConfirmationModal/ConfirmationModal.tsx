@@ -19,12 +19,13 @@ const ConfirmationModal: React.FC<Props> = ({
 }) => {
   return (
     <>
-      <Backdrop show={open} />
+      <Backdrop show={open} style={{ zIndex: 80 }} />
       <div
         style={{
           left: "50%",
           top: "10%",
           transform: "translate(-50%, 0)",
+          zIndex: 90,
         }}
         className={`md:max-w-xl md:w-full absolute bg-white z-50 border-2 border-gray-500 rounded-lg px-6 py-4 ${
           !open && "hidden"
