@@ -1,0 +1,15 @@
+.dashboardLayout .dashboardLayout__bottomNavbar {
+  @apply mx-auto w-full sm:w-auto flex bg-primary border-gray-50 border-t-2 sm:border-l-2 sm:border-r-2 overflow-hidden;
+  border-radius: 20px 20px 0 0;
+}
+@media screen and (max-width: 639px) {
+  .dashboardLayout .dashboardLayout__bottomNavbar {
+    @apply grid grid-cols-4;
+    border-radius: 0;
+  }
+  .dashboardLayout .dashboardLayout__bottomNavbar a,
+  .dashboardLayout .dashboardLayout__bottomNavbar > div {
+    display: grid;
+    place-items: center;
+  }
+}

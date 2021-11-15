@@ -238,10 +238,10 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           {idealSolutionDistanceKey[i]}
         </td>
         <td className="p-2 text-primary">
-          {idealSolutionDistance[idealSolutionDistanceKey[i]].dPlus}
+          {idealSolutionDistance[idealSolutionDistanceKey[i]].dPlus.toFixed(4)}
         </td>
         <td className="p-2 text-primary">
-          {idealSolutionDistance[idealSolutionDistanceKey[i]].dMin}
+          {idealSolutionDistance[idealSolutionDistanceKey[i]].dMin.toFixed(4)}
         </td>
       </tr>
     );
@@ -254,7 +254,9 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
         <td className="p-2 bg-primary bg-opacity-20 font-bold text-primary">
           {finalRankingData[i].ticker}
         </td>
-        <td className="p-2 text-primary">{finalRankingData[i].nilai}</td>
+        <td className="p-2 text-primary">
+          {finalRankingData[i].nilai.toFixed(4)}
+        </td>
         <td className="p-2 text-primary">{i + 1}</td>
       </tr>
     );
@@ -270,49 +272,50 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
         currentCriteria={criteriaList}
       />
       <div>
-        <span className="text-3xl bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold bsm:g-darkPrimary tsm:ext-white psm:x-4 py-1 fsm:ont-semibold rounded-md">
           1. Bobot
         </span>
-        <table className="w-full mt-10">
-          <thead>
-            <tr className="border-t-2 border-b-2 border-gray-300">
-              <td className="p-2"></td>
-              {criteriaList.map((value) => (
-                <td
-                  key={value._id}
-                  className="text-primary p-2 font-bold text-center"
-                >
-                  {value.nama}
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>
+              <tr className="border-t-2 border-b-2 border-gray-300">
+                <td className="p-2"></td>
+                {criteriaList.map((value) => (
+                  <td
+                    key={value._id}
+                    className="text-primary p-2 font-bold text-center"
+                  >
+                    {value.nama}
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-b-2 border-gray-300">
+                <td className="p-2"></td>
+                {criteriaList.map((value) => (
+                  <td
+                    key={value._id}
+                    className="text-primary p-2 font-bold text-center "
+                  >
+                    {value.bobot}
+                  </td>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b-2 border-gray-300">
+                <td className="p-2 bg-primary bg-opacity-20 font text-primary font-bold">
+                  Keterangan
                 </td>
-              ))}
-            </tr>
-            <tr className="border-b-2 border-gray-300">
-              <td className="p-2"></td>
-              {criteriaList.map((value) => (
-                <td
-                  key={value._id}
-                  className="text-primary p-2 font-bold text-center "
-                >
-                  {value.bobot}
-                </td>
-              ))}
-              <td className="p-2"></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b-2 border-gray-300">
-              <td className="p-2 bg-primary bg-opacity-20 font text-primary font-bold">
-                Keterangan
-              </td>
-              {criteriaList.map((value) => (
+                {/* {criteriaList.map((value) => (
                 <td key={value._id} className="text-primary text-center ">
                   {value.keterangan.slice(0, 1).toUpperCase() +
                     value.keterangan.slice(1)}
                 </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
+              ))} */}
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div className="flex flex-row-reverse">
           <button
             onClick={toggleBobotModal}
@@ -323,7 +326,7 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
         </div>
       </div>
       <div className="mt-10">
-        <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           2. Data
         </span>
         <div className="flex items-center mt-10">
@@ -332,13 +335,15 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           </p>
           {numberOfDataOptionList(changeRawDataResult)}
         </div>
-        <table className="w-full mt-10">
-          <thead>{generalTableHeader}</thead>
-          <tbody>{rawDataListComponent}</tbody>
-        </table>
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>{generalTableHeader}</thead>
+            <tbody>{rawDataListComponent}</tbody>
+          </table>
+        </div>
       </div>
       <div className="mt-10">
-        <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           3. Matriks keputusan ternormalisasi
         </span>
         <div className="flex items-center mt-10">
@@ -347,13 +352,15 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           </p>
           {numberOfDataOptionList(changeNormalizationDataResult)}
         </div>
-        <table className="w-full mt-10">
-          <thead>{generalTableHeader}</thead>
-          <tbody>{normalizationDataListComponent}</tbody>
-        </table>
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>{generalTableHeader}</thead>
+            <tbody>{normalizationDataListComponent}</tbody>
+          </table>
+        </div>
       </div>
       <div className="mt-10">
-        <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           4. Matriks keputusan ternormalisasi terbobot
         </span>
         <div className="flex items-center mt-10">
@@ -362,13 +369,15 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           </p>
           {numberOfDataOptionList(changeWeightNormalizationDataResult)}
         </div>
-        <table className="w-full mt-10">
-          <thead>{generalTableHeader}</thead>
-          <tbody>{weightNormalizationListComponent}</tbody>
-        </table>
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>{generalTableHeader}</thead>
+            <tbody>{weightNormalizationListComponent}</tbody>
+          </table>
+        </div>
       </div>
       <div className="mt-10">
-        <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           5. Matriks solusi ideal negatif dan positif
         </span>
         <div className="flex items-center mt-10">
@@ -377,79 +386,81 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           </p>
           {numberOfDataOptionList(changeWeightNormalizationDataResult)}
         </div>
-        <table className="w-full mt-10">
-          <thead>
-            <tr className="border-t-2 border-b-2 border-gray-300">
-              <td></td>
-              {[
-                "Ukuran Perusahaan",
-                "Kondisi Keuangan",
-                "Stabilitas Laba",
-                "Catatan Dividen",
-                "Pertumbuhan Laba",
-                "PER",
-                "PBV",
-              ].map((value) => (
-                <td className="p-2 font-bold text-primary " key={value}>
-                  {value}
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>
+              <tr className="border-t-2 border-b-2 border-gray-300">
+                <td></td>
+                {[
+                  "Ukuran Perusahaan",
+                  "Kondisi Keuangan",
+                  "Stabilitas Laba",
+                  "Catatan Dividen",
+                  "Pertumbuhan Laba",
+                  "PER",
+                  "PBV",
+                ].map((value) => (
+                  <td className="p-2 font-bold text-primary " key={value}>
+                    {value}
+                  </td>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b-2 border-gray-300">
+                <td className="p-2 font-bold text-primary ">MAX</td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.marketCap?.toFixed(3)}
                 </td>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b-2 border-gray-300">
-              <td className="p-2 font-bold text-primary ">MAX</td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.marketCap?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.currentRatio?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.adanyaLaba?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.adanyaDividen?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.pertumbuhanLaba?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.per?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.positif.pbv?.toFixed(3)}
-              </td>
-            </tr>
-            <tr className="border-b-2 border-gray-300">
-              <td className="p-2 font-bold text-primary ">MIN</td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.marketCap?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.currentRatio?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.adanyaLaba?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.adanyaDividen?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {idealSolutionData?.negatif.pertumbuhanLaba?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {(idealSolutionData?.negatif.per as number)?.toFixed(3)}
-              </td>
-              <td className="p-2 text-primary">
-                {(idealSolutionData?.negatif.pbv as number)?.toFixed(3)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.currentRatio?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.adanyaLaba?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.adanyaDividen?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.pertumbuhanLaba?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.per?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.positif.pbv?.toFixed(3)}
+                </td>
+              </tr>
+              <tr className="border-b-2 border-gray-300">
+                <td className="p-2 font-bold text-primary ">MIN</td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.negatif.marketCap?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.negatif.currentRatio?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.negatif.adanyaLaba?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.negatif.adanyaDividen?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {idealSolutionData?.negatif.pertumbuhanLaba?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {(idealSolutionData?.negatif.per as number)?.toFixed(3)}
+                </td>
+                <td className="p-2 text-primary">
+                  {(idealSolutionData?.negatif.pbv as number)?.toFixed(3)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="mt-10">
-        <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           6. D+ dan D- untuk setiap alternatif
         </span>
         <div className="flex items-center mt-10">
@@ -458,22 +469,24 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           </p>
           {numberOfDataOptionList(changeIdealSolutionDistance)}
         </div>
-        <table className="w-full mt-10">
-          <thead>
-            <tr className="border-t-2 border-b-2 border-gray-300">
-              <td className="p-2 font-bold text-primary bg-primary bg-opacity-20 ">
-                Ticker
-              </td>
-              <td className="p-2 font-bold text-primary ">D +</td>
-              <td className="p-2 font-bold text-primary ">D -</td>
-            </tr>
-          </thead>
-          <tbody>{idealSolutionDistanceComponent}</tbody>
-        </table>
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>
+              <tr className="border-t-2 border-b-2 border-gray-300">
+                <td className="p-2 font-bold text-primary bg-primary bg-opacity-20 ">
+                  Ticker
+                </td>
+                <td className="p-2 font-bold text-primary ">D +</td>
+                <td className="p-2 font-bold text-primary ">D -</td>
+              </tr>
+            </thead>
+            <tbody>{idealSolutionDistanceComponent}</tbody>
+          </table>
+        </div>
       </div>
 
       <div className="mt-10">
-        <span className="text-3xl  bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           7.Final Ranking
         </span>
         <div className="flex items-center mt-10">
@@ -482,18 +495,20 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           </p>
           {numberOfDataOptionList(changeFinalRanking)}
         </div>
-        <table className="w-full mt-10">
-          <thead>
-            <tr className="border-t-2 border-b-2 border-gray-300">
-              <td className="p-2 font-bold text-primary bg-primary bg-opacity-20 ">
-                Ticker
-              </td>
-              <td className="p-2 font-bold text-primary ">Preferensi</td>
-              <td className="p-2 font-bold text-primary ">Ranking</td>
-            </tr>
-          </thead>
-          <tbody>{finalRankingComponent}</tbody>
-        </table>
+        <div className="w-full overflow-auto">
+          <table className="w-full mt-10">
+            <thead>
+              <tr className="border-t-2 border-b-2 border-gray-300">
+                <td className="p-2 font-bold text-primary bg-primary bg-opacity-20 ">
+                  Ticker
+                </td>
+                <td className="p-2 font-bold text-primary ">Preferensi</td>
+                <td className="p-2 font-bold text-primary ">Ranking</td>
+              </tr>
+            </thead>
+            <tbody>{finalRankingComponent}</tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

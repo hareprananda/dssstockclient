@@ -37,7 +37,7 @@ const DashboardLayout: React.FC = ({ children }) => {
 
   const userData = LocalStorage.get("user_data");
   return (
-    <div>
+    <div className="dashboardLayout">
       <div>
         <FixedImageWrapper
           top={0}
@@ -63,15 +63,15 @@ const DashboardLayout: React.FC = ({ children }) => {
           <p className="text-white text-2xl">{userData?.name}</p>
         </FixedImageWrapper>
       </div>
-      <div className="max-w mx-auto px-5" style={{ maxWidth: "1665px" }}>
+      <div
+        className="max-w mx-auto px-2 md:px-5"
+        style={{ maxWidth: "1665px" }}
+      >
         {children}
       </div>
       <div className="w-full h-20"></div>
       <div className="fixed bottom-0 w-full grid place-items-center">
-        <div
-          className="mx-auto flex bg-primary border-primary border-2 overflow-hidden"
-          style={{ borderRadius: "20px 20px 0 0" }}
-        >
+        <div className="dashboardLayout__bottomNavbar">
           <Link href={RouteUrl.dashboard}>
             <a
               onClick={changeNavbar("home")}
@@ -80,6 +80,7 @@ const DashboardLayout: React.FC = ({ children }) => {
               }`}
             >
               <Icon.StatisticIcon
+                style={{ fontSize: "20px" }}
                 fill={activeBottomNavbar === "home" ? "#0057b5" : "white"}
               />
             </a>

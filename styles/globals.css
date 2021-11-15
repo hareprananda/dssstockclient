@@ -35,3 +35,6 @@ img {
 }
 @import "../src/components/Loader/Loader.css";
 @import "../src/components/layout/InitialLayout.css";
+@import "../src/components/layout/DashboardLayout.css";
+
+@import "pages/dashboard/index.css";

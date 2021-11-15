@@ -18,7 +18,7 @@ const InitialLayout: FC = ({ children }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const { width } = useWindowResize();
+  const { width, height } = useWindowResize();
   useEffect(() => {
     dispatch(ReducerActions.ui.setBackDrop(true));
   }, []);
@@ -33,6 +33,19 @@ const InitialLayout: FC = ({ children }) => {
       menuRefEl.style.top = showMenu ? "0" : "-200px";
     }
   }, [showMenu]);
+  useEffect(() => {
+    if (height === 0) return;
+    const bottomIcon1 = document.querySelector(
+      ".initialLayout-bottomIcon1"
+    ) as HTMLDivElement;
+    const bottomIcon2 = document.querySelector(
+      ".initialLayout-bottomIcon2"
+    ) as HTMLDivElement;
+    if (height < 675) {
+      bottomIcon1.style.bottom = `-${685 - height}px`;
+      bottomIcon2.style.bottom = `-${775 - height}px`;
+    }
+  }, [height]);
 
   if (typeof window !== "undefined") {
     const userStorage = LocalStorage.get("user_data");
@@ -75,10 +88,19 @@ const InitialLayout: FC = ({ children }) => {
         </div>
       </div>
 
-      <FixedImageWrapper style={{ zIndex: -1 }} bottom={-10}>
+      <FixedImageWrapper
+        style={{ zIndex: -1 }}
+        bottom={-10}
+        className="initialLayout-bottomIcon1"
+      >
         <BottomDecoration style={{ maxHeight: "308px", height: "25vw" }} />
       </FixedImageWrapper>
-      <FixedImageWrapper left={-60} bottom={-100} style={{ zIndex: -1 }}>
+      <FixedImageWrapper
+        left={-60}
+        bottom={-100}
+        style={{ zIndex: -1 }}
+        className="initialLayout-bottomIcon2"
+      >
         <BottomLeftDecoration style={{ maxWidth: "1054px" }} />
       </FixedImageWrapper>
 

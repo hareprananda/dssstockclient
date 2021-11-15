@@ -8,6 +8,7 @@ import { ResponseDssResult } from "src/request/DSS/RequestDSSType";
 import CountDetail from "src/components/Page/Dashboard/CountDetail";
 import { useAppDispatch, useAppSelector } from "src/redux/ReduxHook";
 import ReducerActions from "src/redux/ReducerAction";
+import { useWindowResize } from "src/hooks/useWindowResize";
 
 const Dashboard: Page = () => {
   const [currentDate, setCurrentDate] = useState("");
@@ -17,6 +18,7 @@ const Dashboard: Page = () => {
   const [showCountDetail, setShowCountDetail] = useState(false);
   const { requestCountDss } = useAppSelector((state) => state.request);
   const [search, setSearch] = useState("");
+  const { width } = useWindowResize();
   const dispatch = useAppDispatch();
   const fullResultData = useRef<ResponseDssResult>([]);
   useEffect(() => {
@@ -63,24 +65,25 @@ const Dashboard: Page = () => {
   for (let i = 0; i < resultBoxLimit; i++) {
     if (!resultData[i]) break;
     resultBox.push(
-      <div
-        key={i}
-        className="bg-primary text-white relative rounded-2xl shadow-2xl overflow-hidden"
-        style={{ paddingTop: "100%" }}
-      >
-        <div className="absolute top-0 w-full h-full">
-          <div className="flex justify-between">
-            <p className="text-2xl font-bold bg-brown px-5 py-3 rounded shadow-xl">
-              #{i + 1}
+      <div key={i} className="dashboard__result-box">
+        <div>
+          <div className="flex justify-between h-full md:h-auto">
+            <p className="dashboard__result-rankNumber">
+              <span className="hidden md:inline">#</span>
+              {i + 1}
             </p>
-            <p className="text-2xl font-bold px-5 py-3">
+            <p className=" dashboard__result-box__score">
               {resultData[i]?.nilai?.toFixed(4)}
             </p>
           </div>
-          <div className="absolute centeringElement text-5xl font-bold">
+          <div className="dashboard__result-box-ticker">
             {resultData[i]?.ticker}
           </div>
-          <div className="absolute bottom-2 px-5">{resultData[i]?.nama}</div>
+          <div className="dashboard__result-box-name">
+            {width < 600
+              ? resultData[i]?.nama.slice(0, 20)
+              : resultData[i]?.nama}
+          </div>
         </div>
       </div>
     );
@@ -107,19 +110,21 @@ const Dashboard: Page = () => {
   };
 
   return (
-    <>
-      <div className="flex justify-between mt-28 ">
-        <p className="text-3xl bg-darkPrimary text-white px-4 py-1 font-semibold rounded-md">
-          Topsis value investing final ranking
+    <div className="dashboard__result">
+      <div className="flex flex-col-reverse md:flex-row justify-between mt-28 ">
+        <p className="text-xl sm:text-2xl md:text-3xl  md:bg-darkPrimary text-darkPrimary md:text-white md:px-4 py-1 font-bold md:font-semibold rounded-md">
+          Value Investing Final Ranking
         </p>
-        <p className="text-3xl text-darkPrimary font-semibold">{currentDate}</p>
+        <p className="text-right mb-2 text-lg md:text-3xl text-darkPrimary md:font-semibold">
+          {currentDate}
+        </p>
       </div>
 
       <div className="grid place-items-center mt-8">
         <input
           onChange={onChangeSearch}
           placeholder="Search..."
-          className="focus:outline-none w-2/5 text-darkPrimary px-3 py-1 mx-auto bg-softPrimary2 border-primary border-2 rounded-xl text-2xl shadow-10xl"
+          className="focus:outline-none placeholder-darkPrimary placeholder-opacity-60 w-full md:w-2/5 bg-primary bg-opacity-20 md:bg-opacity-100 text-darkPrimary px-3 py-1 mx-auto md:bg-softPrimary2 md:border-primary md:border-2 rounded-lg   md:text-2xl text-xl md:shadow-10xl"
         />
       </div>
       <div>
@@ -129,7 +134,7 @@ const Dashboard: Page = () => {
           </p>
           {numberOfDataOptionList(changeBoxResult)}
         </div>
-        <div className="grid grid-cols-6 gap-5 mt-8">{resultBox}</div>
+        <div className="dashboard__result-box__container">{resultBox}</div>
       </div>
       {showCountDetail && (
         <CountDetail
@@ -143,7 +148,7 @@ const Dashboard: Page = () => {
       >
         {showCountDetail ? "Sembunyikan" : "Tampilkan"} detail perhitungan
       </button>
-    </>
+    </div>
   );
 };
 export default withProtected(Dashboard);
