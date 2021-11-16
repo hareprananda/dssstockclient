@@ -71,7 +71,7 @@ const BobotModal: React.FC<Props> = ({ open, currentCriteria, setOpen }) => {
           maxHeight: "calc(100% - 25px)",
           transform: "translate(-50%, 0)",
         }}
-        className={`md:max-w-xl md:w-full fixed bg-white z-50 border-2 border-gray-500 rounded-lg px-6 py-4 ${
+        className={`max-w-screen-90 sm:max-w-screen-80 md:max-w-xl w-full fixed bg-white z-50 border-2 border-gray-500 rounded-lg px-6 py-4 ${
           !open && "hidden"
         } `}
       >

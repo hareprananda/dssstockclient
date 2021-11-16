@@ -3,12 +3,15 @@ import useChart from "src/hooks/useChart";
 import { ResponseDssSingleStock } from "src/request/DSS/RequestDSSType";
 import ChartDefaultOptions from "src/utils/chart/ChartDefaultOptions";
 import NumberUtils from "src/utils/number/NumberUtils";
+import { useWindowResize } from "src/hooks/useWindowResize";
+import { Chart } from "chart.js";
 
 interface Props {
   detailList: ResponseDssSingleStock["detail"];
 }
 
 const TickerChart: React.FC<Props> = ({ detailList }) => {
+  const { width: windowWidth } = useWindowResize();
   const incomeChart = useChart("ticker__income-chart", {
     type: "bar",
     data: {
@@ -109,36 +112,56 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
     );
     balanceChart.update();
   }, [detailList]);
+  useEffect(() => {
+    if (windowWidth === 0 || !incomeChart) return;
+    const chartElement = document.querySelector(
+      "#incomeChart"
+    ) as HTMLDivElement;
+    const elementHeight = chartElement.offsetHeight;
+    const divider = windowWidth > 500 ? 10 : windowWidth > 400 ? 12 : 17;
+    (
+      incomeChart as Chart<"bar", number[], unknown>
+    ).data.datasets[1].barThickness = elementHeight / divider;
+    incomeChart.update();
+  }, [windowWidth]);
 
   return (
     <div>
       <div className="mt-6">
-        <span className="bg-primary text-white py-2 text-3xl font-bold px-3 rounded ">
+        <span className="sm:bg-primary text-primary sm:text-white py-2 text-xl sm:text-2xl md:text-3xl font-bold px-3 rounded ">
           Chart Laba dan Pertumbuhan Laba
         </span>
       </div>
-      {detailList.length > 0 && (
-        <p className="text-primary mt-10">
-          * disajikan dalam{" "}
-          {NumberUtils.pembulatan(detailList[detailList.length - 1].pembulatan)}
-        </p>
-      )}
 
-      <canvas id="ticker__income-chart" className="mt-5" />
+      <div className="mx-auto full-chart" id="incomeChart">
+        {detailList.length > 0 && (
+          <p className="text-primary mt-10">
+            * disajikan dalam{" "}
+            {NumberUtils.pembulatan(
+              detailList[detailList.length - 1].pembulatan
+            )}
+          </p>
+        )}
+        <canvas id="ticker__income-chart" className="mt-5" />
+      </div>
 
       <div className="mt-6">
-        <span className="bg-primary text-white py-2 text-3xl font-bold px-3 rounded ">
+        <span className="sm:bg-primary text-primary sm:text-white py-2 text-xl sm:text-2xl md:text-3xl font-bold px-3 rounded ">
           Chart Posisi Keuangan
         </span>
       </div>
-      {detailList.length > 0 && (
-        <p className="text-primary mt-10">
-          * disajikan dalam{" "}
-          {NumberUtils.pembulatan(detailList[detailList.length - 1].pembulatan)}
-        </p>
-      )}
 
-      <canvas id="ticker__balance-chart" className="mt-5" />
+      <div className="mx-auto full-chart">
+        {detailList.length > 0 && (
+          <p className="text-primary mt-10">
+            * disajikan dalam{" "}
+            {NumberUtils.pembulatan(
+              detailList[detailList.length - 1].pembulatan
+            )}
+          </p>
+        )}
+        <canvas id="ticker__balance-chart" className="mt-5" />
+      </div>
     </div>
   );
 };

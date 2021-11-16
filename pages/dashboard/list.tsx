@@ -124,112 +124,114 @@ const List = () => {
           </Button>
         </div>
       </div>
-      <table className="table-auto w-full mt-7">
-        <thead>
-          <tr className="bg-smoothPrimary text-primary text-left">
-            <th
-              onClick={changeOrderBy("_id")}
-              className={`${
-                orderBy[0] === "_id" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>Ticker</span>
-                {orderedByArrow("_id")}
-              </div>
-            </th>
-            <th
-              onClick={changeOrderBy("nama")}
-              className={`${
-                orderBy[0] === "nama" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>Nama Perusahaan</span>
-                {orderedByArrow("nama")}
-              </div>
-            </th>
-            <th
-              onClick={changeOrderBy("harga")}
-              className={`${
-                orderBy[0] === "harga" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>Harga</span>
-                {orderedByArrow("harga")}
-              </div>
-            </th>
-            <th
-              onClick={changeOrderBy("per")}
-              className={`${
-                orderBy[0] === "per" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>PER</span>
-                {orderedByArrow("per")}
-              </div>
-            </th>
-            <th
-              onClick={changeOrderBy("pbv")}
-              className={`${
-                orderBy[0] === "pbv" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>PBV</span>
-                {orderedByArrow("pbv")}
-              </div>
-            </th>
-            <th
-              onClick={changeOrderBy("currentRatio")}
-              className={`${
-                orderBy[0] === "currentRatio" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>Current Ratio</span>
-                {orderedByArrow("currentRatio")}
-              </div>
-            </th>
-            <th
-              onClick={changeOrderBy("marketCap")}
-              className={`${
-                orderBy[0] === "marketCap" && "bg-primary text-white"
-              } p-2 cursor-pointer`}
-            >
-              <div className="flex justify-between items-center">
-                <span>Market Cap</span>
-                {orderedByArrow("marketCap")}
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataList.map((data) => (
-            <tr key={data._id} className="border-b-2 border-brown">
-              <td className="p-2">
-                <Link href={`${RouteUrl.ticker}/${data._id}`}>
-                  <a className="text-primary">{data._id}</a>
-                </Link>
-              </td>
-              <td className="p-2">
-                <Link href={`${RouteUrl.ticker}/${data._id}`}>
-                  <a className="text-primary">{data.nama}</a>
-                </Link>
-              </td>
-              <td className="p-2">{data.harga}</td>
-              <td className="p-2">{data.per.toFixed(2)}</td>
-              <td className="p-2">{data.pbv.toFixed(2)}</td>
-              <td className="p-2">{data.currentRatio.toFixed(2)}%</td>
-              <td className="p-2">
-                {(data.marketCap / 1000000000000).toFixed(2)}T
-              </td>
+      <div className="max-w-full overflow-auto">
+        <table className="table-auto w-full mt-7">
+          <thead>
+            <tr className="bg-smoothPrimary text-primary text-left">
+              <th
+                onClick={changeOrderBy("_id")}
+                className={`${
+                  orderBy[0] === "_id" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>Ticker</span>
+                  {orderedByArrow("_id")}
+                </div>
+              </th>
+              <th
+                onClick={changeOrderBy("nama")}
+                className={`${
+                  orderBy[0] === "nama" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>Nama Perusahaan</span>
+                  {orderedByArrow("nama")}
+                </div>
+              </th>
+              <th
+                onClick={changeOrderBy("harga")}
+                className={`${
+                  orderBy[0] === "harga" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>Harga</span>
+                  {orderedByArrow("harga")}
+                </div>
+              </th>
+              <th
+                onClick={changeOrderBy("per")}
+                className={`${
+                  orderBy[0] === "per" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>PER</span>
+                  {orderedByArrow("per")}
+                </div>
+              </th>
+              <th
+                onClick={changeOrderBy("pbv")}
+                className={`${
+                  orderBy[0] === "pbv" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>PBV</span>
+                  {orderedByArrow("pbv")}
+                </div>
+              </th>
+              <th
+                onClick={changeOrderBy("currentRatio")}
+                className={`${
+                  orderBy[0] === "currentRatio" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>Current Ratio</span>
+                  {orderedByArrow("currentRatio")}
+                </div>
+              </th>
+              <th
+                onClick={changeOrderBy("marketCap")}
+                className={`${
+                  orderBy[0] === "marketCap" && "bg-primary text-white"
+                } p-2 cursor-pointer`}
+              >
+                <div className="flex justify-between items-center">
+                  <span>Market Cap</span>
+                  {orderedByArrow("marketCap")}
+                </div>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {dataList.map((data) => (
+              <tr key={data._id} className="border-b-2 border-brown">
+                <td className="p-2">
+                  <Link href={`${RouteUrl.ticker}/${data._id}`}>
+                    <a className="text-primary">{data._id}</a>
+                  </Link>
+                </td>
+                <td className="p-2">
+                  <Link href={`${RouteUrl.ticker}/${data._id}`}>
+                    <a className="text-primary">{data.nama}</a>
+                  </Link>
+                </td>
+                <td className="p-2">{data.harga}</td>
+                <td className="p-2">{data.per.toFixed(2)}</td>
+                <td className="p-2">{data.pbv.toFixed(2)}</td>
+                <td className="p-2">{data.currentRatio.toFixed(2)}%</td>
+                <td className="p-2">
+                  {(data.marketCap / 1000000000000).toFixed(2)}T
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

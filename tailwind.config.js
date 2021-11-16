@@ -42,6 +42,10 @@ module.exports = {
         70: 70,
         80: 80,
         90: 90
+      },
+      maxWidth:{
+        "screen-80" : "80vw",
+        "screen-90": "90vw"
       }
     }
   },

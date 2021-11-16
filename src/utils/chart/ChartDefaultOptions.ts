@@ -14,7 +14,11 @@ const ChartDefaultOptions = (props: Props): Chart.ChartOptions => {
       ticks: {
         // Include a dollar sign in the ticks
         callback: function (value) {
-          return "Rp." + NumberUtils.separator(parseInt(value as string));
+          return (
+            "Rp." +
+            NumberUtils.separator(parseInt(value as string) / 1000000000000) +
+            "T"
+          );
         },
       },
     },
@@ -43,6 +47,7 @@ const ChartDefaultOptions = (props: Props): Chart.ChartOptions => {
 
   return {
     responsive: true,
+    maintainAspectRatio: false,
     interaction: {
       mode: "index",
       intersect: false,

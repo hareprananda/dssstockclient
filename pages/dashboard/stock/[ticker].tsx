@@ -132,29 +132,33 @@ const Ticker: React.FC = () => {
 
       <p className="text-primary">{summary.nama}</p>
 
-      <div className="flex mt-5">
+      <div className="grid grid-cols-2 md:flex mt-5">
         <div className="text-center">
-          <p className="font-bold text-2xl text-primary">Market Cap</p>
+          <p className="font-bold text-xl md:text-2xl text-primary">
+            Market Cap
+          </p>
           <p className="text-center text-xl text-primary">
             {((summary.marketCap || 0) / 1000000000000).toFixed(2)}T
           </p>
         </div>
-        <div className="text-center ml-10">
-          <p className="font-bold text-2xl text-primary">
+        <div className="text-center md:ml-10">
+          <p className="font-bold text-xl md:text-2xl text-primary">
             PER Rata-rata 2 tahun
           </p>
           <p className="text-center text-xl text-primary">
             {(summary.per || 0).toFixed(2)} x
           </p>
         </div>
-        <div className="text-center ml-10">
-          <p className="font-bold text-2xl text-primary">PBV</p>
+        <div className="text-center md:ml-10">
+          <p className="font-bold text-xl md:text-2xl text-primary">PBV</p>
           <p className="text-center text-xl text-primary">
             {(summary.pbv || 0).toFixed(2)} x
           </p>
         </div>
-        <div className="text-center ml-10">
-          <p className="font-bold text-2xl text-primary">Current Ratio</p>
+        <div className="text-center md:ml-10">
+          <p className="font-bold text-xl md:text-2xl text-primary">
+            Current Ratio
+          </p>
           <p className="text-center text-xl text-primary">
             {(summary.currentRatio || 0).toFixed(2)}%
           </p>
@@ -167,7 +171,7 @@ const Ticker: React.FC = () => {
           style={{ width: "637px" }}
         >
           <div
-            className={`text-center py-3 text-xl ${
+            className={`text-center py-2 md:py-3 text-xl ${
               activeMenu === "chart" ? "bg-white text-primary" : "text-white"
             } rounded-2xl cursor-pointer`}
             onClick={() => setActiveMenu("chart")}
@@ -175,12 +179,12 @@ const Ticker: React.FC = () => {
             <h1>Chart</h1>
           </div>
           <div
-            className={`text-center py-3 text-xl cursor-pointer ${
+            className={`text-center py-2 md:py-3 text-xl cursor-pointer ${
               activeMenu === "table" ? "bg-white text-primary" : "text-white"
             } rounded-2xl`}
             onClick={() => setActiveMenu("table")}
           >
-            <h1>Laporan Keuangan</h1>
+            <h1>Keuangan</h1>
           </div>
         </div>
       </div>

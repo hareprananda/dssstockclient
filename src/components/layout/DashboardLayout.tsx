@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import LocalStorage from "src/utils/localstorage/LocalStorage";
 import useGoogleAuth from "src/hooks/useGoogleAuth";
 import UIState from "src/redux/UIReducer/UIState";
+import { useWindowResize } from "src/hooks/useWindowResize";
 
 type TypeUIState = typeof UIState;
 
@@ -19,6 +20,7 @@ const DashboardLayout: React.FC = ({ children }) => {
   } = useAppSelector((state) => state);
   const { signOut } = useGoogleAuth();
 
+  const { width } = useWindowResize();
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -51,16 +53,22 @@ const DashboardLayout: React.FC = ({ children }) => {
           }}
         >
           <div style={{ position: "absolute", top: "0", zIndex: -1 }}>
-            <DashboardHeader width="100%" height="130px" />
+            <DashboardHeader
+              width="100%"
+              height="130px"
+              style={{ minWidth: "665px" }}
+            />
           </div>
           <img
             alt="Auth Image"
             src={userData?.imageUrl}
-            className="mt-2 mx-3"
+            className="mt-2 mx-3 border-2 border-gray-50"
             style={{ borderRadius: "50%", width: "48px", height: "48px" }}
             referrerPolicy="no-referrer"
           />
-          <p className="text-white text-2xl">{userData?.name}</p>
+          {width < 600 ? null : (
+            <p className="text-white text-2xl">{userData?.name}</p>
+          )}
         </FixedImageWrapper>
       </div>
       <div

@@ -113,42 +113,44 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
           {NumberUtils.pembulatan(detailList[detailList.length - 1].pembulatan)}
         </p>
       )}
-      <table className="w-full mt-5">
-        <thead>
-          <tr className="border-b-2 border-t-2 border-gray-300">
-            <td className="p-2 w-1/12"></td>
-            {detailListState.map((data) => (
-              <td className="w-1/5 p-2" key={data._id}>
-                <span
-                  onClick={() =>
-                    userData?.level === "admin" && chooseUpdate(data._id)
-                  }
-                  className="bg-primary text-white text-xl px-4 py-1 rounded cursor-pointer"
-                >
-                  Kuartal {romanize(data.periode)} {data.tahun}
-                </span>
-              </td>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {availKey.map((value) => {
-            return (
-              <tr
-                key={value}
-                className="text-primary border-b-2 border-gray-300"
-              >
-                <td className="p-2 font-bold text-primary">
-                  {dataName(value)}
+      <div className="max-w-full overflow-auto">
+        <table className="w-full mt-5">
+          <thead>
+            <tr className="border-b-2 border-t-2 border-gray-300">
+              <td className="p-2 w-1/12"></td>
+              {detailListState.map((data) => (
+                <td className="w-1/5 p-2" key={data._id}>
+                  <span
+                    onClick={() =>
+                      userData?.level === "admin" && chooseUpdate(data._id)
+                    }
+                    className="bg-primary text-white text-xl p-1 rounded cursor-pointer"
+                  >
+                    Kuartal {romanize(data.periode)} {data.tahun}
+                  </span>
                 </td>
-                {tableValue(
-                  value as keyof ResponseDssSingleStock["detail"][number]
-                )}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {availKey.map((value) => {
+              return (
+                <tr
+                  key={value}
+                  className="text-primary border-b-2 border-gray-300"
+                >
+                  <td className="p-2 font-bold text-primary">
+                    {dataName(value)}
+                  </td>
+                  {tableValue(
+                    value as keyof ResponseDssSingleStock["detail"][number]
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

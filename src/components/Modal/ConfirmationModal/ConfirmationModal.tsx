@@ -27,7 +27,7 @@ const ConfirmationModal: React.FC<Props> = ({
           transform: "translate(-50%, 0)",
           zIndex: 90,
         }}
-        className={`md:max-w-xl md:w-full absolute bg-white z-50 border-2 border-gray-500 rounded-lg px-6 py-4 ${
+        className={`max-w-screen-80  md:max-w-xl w-full absolute bg-white z-50 border-2 border-gray-500 rounded-lg px-6 py-4 ${
           !open && "hidden"
         } `}
       >

@@ -272,7 +272,7 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
         currentCriteria={criteriaList}
       />
       <div>
-        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold bsm:g-darkPrimary tsm:ext-white psm:x-4 py-1 fsm:ont-semibold rounded-md">
+        <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           1. Bobot
         </span>
         <div className="w-full overflow-auto">
@@ -380,12 +380,6 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
         <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
           5. Matriks solusi ideal negatif dan positif
         </span>
-        <div className="flex items-center mt-10">
-          <p className="block  text-primary   text-lg font-bold mr-3">
-            Tampilkan :
-          </p>
-          {numberOfDataOptionList(changeWeightNormalizationDataResult)}
-        </div>
         <div className="w-full overflow-auto">
           <table className="w-full mt-10">
             <thead>
