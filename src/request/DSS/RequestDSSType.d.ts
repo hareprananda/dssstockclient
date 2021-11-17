@@ -102,6 +102,7 @@ type UpdateData = {
   labaBersih: number;
   utangLancar: number;
   asetLancar: number;
+  dividen: 0 | 1;
   tahun: number;
   periode: number;
 };

@@ -30,6 +30,10 @@ const InputList = [
     label: "Aset Lancar",
     name: "asetLancar",
   },
+  {
+    label: "Adanya Dividen",
+    name: "adanyaDividen",
+  },
 ] as const;
 
 type TypeDefaultData = ResponseDssSingleStock["detail"][number];
@@ -62,9 +66,10 @@ const TickerTableModal: React.FC<Props> = ({
     e.preventDefault();
     if (!inputData || loading) return;
     dispatch(ReducerActions.ui.setMainLoader(true));
-
+    const { adanyaDividen, ...restInputData } = inputData;
+    const inputedData = { ...restInputData, dividen: adanyaDividen as 0 | 1 };
     RequestAuthenticated<ResponseDssUpdateFinancial>(
-      ConfigDSS.updateFinancial(router.query.ticker as string, inputData)
+      ConfigDSS.updateFinancial(router.query.ticker as string, inputedData)
     )
       .then((res) => {
         onSuccess(res.data.data);
@@ -143,14 +148,43 @@ const TickerTableModal: React.FC<Props> = ({
               >
                 {value.label}
               </label>
-              <input
-                className="shadow appearance-none border rounded-2xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id={value.name}
-                name={value.name}
-                onChange={onChangeInput}
-                type="text"
-                value={inputData[value.name]}
-              />
+              {value.name === "adanyaDividen" ? (
+                <div className="grid grid-cols-2">
+                  <div>
+                    <label htmlFor="dividen__yes">Ada</label>
+                    <input
+                      id="dividen__yes"
+                      className="ml-2"
+                      type="radio"
+                      name={value.name}
+                      checked={inputData.adanyaDividen === 1}
+                      onChange={onChangeInput}
+                      value={1}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="dividen__no">Tidak ada</label>
+                    <input
+                      id="dividen__no"
+                      type="radio"
+                      className="ml-2"
+                      name={value.name}
+                      checked={inputData.adanyaDividen === 0}
+                      onChange={onChangeInput}
+                      value={0}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <input
+                  className="shadow appearance-none border rounded-2xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id={value.name}
+                  name={value.name}
+                  onChange={onChangeInput}
+                  type="text"
+                  value={inputData[value.name]}
+                />
+              )}
             </div>
           ))}
 

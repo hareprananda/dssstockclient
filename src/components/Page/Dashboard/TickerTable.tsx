@@ -7,6 +7,7 @@ import {
 } from "src/request/DSS/RequestDSSType";
 import LocalStorage from "src/utils/localstorage/LocalStorage";
 import NumberUtils from "src/utils/number/NumberUtils";
+import Icon from "src/assets/Icon";
 
 interface Props {
   detailList: ResponseDssSingleStock["detail"];
@@ -34,7 +35,13 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
 
   useEffect(() => {
     if (detailList.length > 0) {
-      setAvailKey(["ekuitas", "labaBersih", "utangLancar", "asetLancar"]);
+      setAvailKey([
+        "ekuitas",
+        "labaBersih",
+        "utangLancar",
+        "asetLancar",
+        "adanyaDividen",
+      ]);
       setDetailListState(detailList);
     }
   }, [detailList]);
@@ -43,8 +50,25 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
     const temp: JSX.Element[] = [];
 
     for (let i = 0; i < detailList.length; i++) {
+      const iconProps = {
+        width: "30",
+        height: "30",
+        className: "mx-auto sm:ml-4",
+      };
       temp.push(
-        <td className="p-2">Rp.{NumberUtils.separator(detailList[i][key])}</td>
+        key !== "adanyaDividen" ? (
+          <td className="p-2">
+            Rp.{NumberUtils.separator(detailList[i][key])}
+          </td>
+        ) : (
+          <td className="p-2">
+            {detailList[i][key] === 1 ? (
+              <Icon.Check fill="green" {...iconProps} />
+            ) : (
+              <Icon.Close fill="#EF4444" {...iconProps} />
+            )}
+          </td>
+        )
       );
     }
     return temp;
@@ -60,6 +84,8 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
         return "Utang Lancar";
       case "asetLancar":
         return "Aset Lancar";
+      case "adanyaDividen":
+        return "Dividen";
     }
   };
 
@@ -80,6 +106,7 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
         labaBersih: data.labaBersih,
         utangLancar: data.utangLancar,
         asetLancar: data.asetLancar,
+        adanyaDividen: data.dividen ? 1 : 0,
       };
       const targetData = find;
       const newList = detailList.map((list) =>
@@ -119,7 +146,11 @@ const TickerTable: React.FC<Props> = ({ detailList, setDetailList }) => {
             <tr className="border-b-2 border-t-2 border-gray-300">
               <td className="p-2 w-1/12"></td>
               {detailListState.map((data) => (
-                <td className="w-1/5 p-2" key={data._id}>
+                <td
+                  className="p-2"
+                  key={data._id}
+                  style={{ minWidth: "200px" }}
+                >
                   <span
                     onClick={() =>
                       userData?.level === "admin" && chooseUpdate(data._id)

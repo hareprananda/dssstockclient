@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import useChart from "src/hooks/useChart";
 import { ResponseDssSingleStock } from "src/request/DSS/RequestDSSType";
 import ChartDefaultOptions from "src/utils/chart/ChartDefaultOptions";
-import NumberUtils from "src/utils/number/NumberUtils";
 import { useWindowResize } from "src/hooks/useWindowResize";
 import { Chart } from "chart.js";
 
@@ -81,6 +80,17 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
 
   useEffect(() => {
     if (!incomeChart) return;
+    const pembulatan = detailList[detailList.length - 1].pembulatan;
+    const pembulatanMultiply = Math.pow(10, pembulatan === 1 ? 0 : pembulatan);
+    const leftSideTick = (value: string | number) => {
+      const realValue = parseInt(value as string);
+      const realValuePositif = realValue < 0 ? realValue * -1 : realValue;
+      const trillionDivide = realValuePositif / Math.pow(10, 12);
+      if (trillionDivide < 0.1) {
+        return "Rp." + realValue / Math.pow(10, 9) + "M";
+      }
+      return "Rp." + realValue / Math.pow(10, 12) + "T";
+    };
     incomeChart.data.labels = detailList.map((value) =>
       value.periode === 4
         ? value.tahun
@@ -90,8 +100,15 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
       (value) => value.pertumbuhanLaba
     );
     incomeChart.data.datasets[1].data = detailList.map(
-      (value) => value.labaBersih
+      (value) => value.labaBersih * pembulatanMultiply
     );
+    if (
+      incomeChart.options.scales &&
+      incomeChart.options.scales["A"] &&
+      incomeChart.options.scales["A"].ticks
+    ) {
+      incomeChart.options.scales["A"].ticks.callback = leftSideTick;
+    }
 
     incomeChart.update();
 
@@ -102,14 +119,21 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
         : `${value.tahun} kuartal ${value.periode}`
     );
     balanceChart.data.datasets[0].data = detailList.map(
-      (value) => value.ekuitas
+      (value) => value.ekuitas * pembulatanMultiply
     );
     balanceChart.data.datasets[1].data = detailList.map(
-      (value) => value.asetLancar
+      (value) => value.asetLancar * pembulatanMultiply
     );
     balanceChart.data.datasets[2].data = detailList.map(
-      (value) => value.utangLancar
+      (value) => value.utangLancar * pembulatanMultiply
     );
+    if (
+      balanceChart.options.scales &&
+      balanceChart.options.scales["A"] &&
+      balanceChart.options.scales["A"].ticks
+    ) {
+      balanceChart.options.scales["A"].ticks.callback = leftSideTick;
+    }
     balanceChart.update();
   }, [detailList]);
   useEffect(() => {
@@ -134,14 +158,6 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
       </div>
 
       <div className="mx-auto full-chart" id="incomeChart">
-        {detailList.length > 0 && (
-          <p className="text-primary mt-10">
-            * disajikan dalam{" "}
-            {NumberUtils.pembulatan(
-              detailList[detailList.length - 1].pembulatan
-            )}
-          </p>
-        )}
         <canvas id="ticker__income-chart" className="mt-5" />
       </div>
 
@@ -152,14 +168,6 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
       </div>
 
       <div className="mx-auto full-chart">
-        {detailList.length > 0 && (
-          <p className="text-primary mt-10">
-            * disajikan dalam{" "}
-            {NumberUtils.pembulatan(
-              detailList[detailList.length - 1].pembulatan
-            )}
-          </p>
-        )}
         <canvas id="ticker__balance-chart" className="mt-5" />
       </div>
     </div>

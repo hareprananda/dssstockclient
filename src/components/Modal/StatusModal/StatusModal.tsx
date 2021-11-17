@@ -50,7 +50,9 @@ const StatusModal: React.FC<Props> = ({
             } grid place-items-center py-8 `}
           >
             <div className="border-4 border-white rounded-circle p-2">
-              {type === "error" && <Icon.Close fill="white" />}
+              {type === "error" && (
+                <Icon.Close fill="white" viewBox="0 0 48 48" />
+              )}
               {type === "success" && <Icon.Check fill="white" />}
             </div>
           </div>
