@@ -1,0 +1,24 @@
+.about__page {
+  @apply flex;
+}
+.about__page__text-container {
+  margin-top: 155px;
+  min-height: 150vh;
+  z-index: -2;
+}
+.about__page__text-container p {
+  text-align: justify;
+}
+@media screen and (max-width: 1240px) {
+  .about__page__text-container {
+    @apply mt-0;
+  }
+  .about__page {
+    @apply flex-col;
+  }
+}
+@media screen and (max-width: 767px) and (min-width: 600px) {
+  .about__page > h1 {
+    @apply mt-0;
+  }
+}

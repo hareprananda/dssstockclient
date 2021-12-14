@@ -74,8 +74,10 @@ const TickerTableModal: React.FC<Props> = ({
       .then((res) => {
         onSuccess(res.data.data);
       })
-      .catch(() => {
-        alert("Oops something gone wrong");
+      .catch((err) => {
+        if (err.response.status === 400) {
+          alert(err.response.data.error);
+        }
       })
       .finally(() => {
         dispatch(ReducerActions.ui.setMainLoader(false));
@@ -99,6 +101,7 @@ const TickerTableModal: React.FC<Props> = ({
     RequestAuthenticated(ConfigDSS.eraseFinancial(defaultData._id))
       .then(() => {
         dispatch(ReducerActions.request.reRequestTickerDetail());
+        alert("Laporan keuangan berhasil dihapus");
         toggle();
         toggleOpenConfirmation();
       })

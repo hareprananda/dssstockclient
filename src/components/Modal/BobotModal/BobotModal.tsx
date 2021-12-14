@@ -27,6 +27,7 @@ const BobotModal: React.FC<Props> = ({ open, currentCriteria, setOpen }) => {
     RequestAuthenticated(ConfigDSS.updateCriteria(criteriaData))
       .then(() => {
         dispatch(ReducerActions.request.reRequestCountDss());
+        alert("Update bobot sukses");
         setOpen(false);
       })
       .catch(() => null)

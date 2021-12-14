@@ -32,7 +32,8 @@ const DashboardLayout: React.FC = ({ children }) => {
   useEffect(() => {
     const pathName = router.pathname as typeof RouteUrl[keyof typeof RouteUrl];
     let dispatchValue: TypeUIState["activeBottomNavbar"] = "home";
-    if (pathName === RouteUrl.list) dispatchValue = "list";
+    if (pathName === RouteUrl.list || /\/dashboard\/stock/g.test(pathName))
+      dispatchValue = "list";
     else if (pathName === RouteUrl.upload) dispatchValue = "upload";
     dispatch(ReducerActions.ui.changeActiveBottomNavbar(dispatchValue));
   }, []);
@@ -79,7 +80,11 @@ const DashboardLayout: React.FC = ({ children }) => {
       </div>
       <div className="w-full h-20"></div>
       <div className="fixed bottom-0 w-full grid place-items-center">
-        <div className="dashboardLayout__bottomNavbar">
+        <div
+          className={`dashboardLayout__bottomNavbar ${
+            userData?.level === "admin" ? "admin__navbar" : "user__navbar"
+          }`}
+        >
           <Link href={RouteUrl.dashboard}>
             <a
               onClick={changeNavbar("home")}

@@ -153,7 +153,7 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
     <div>
       <div className="mt-6">
         <span className="sm:bg-primary text-primary sm:text-white py-2 text-xl sm:text-2xl md:text-3xl font-bold px-3 rounded ">
-          Chart Laba dan Pertumbuhan Laba
+          Chart Laba
         </span>
       </div>
 

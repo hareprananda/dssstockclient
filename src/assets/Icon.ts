@@ -13,6 +13,10 @@ import Check from "assets/svg/check_icon.svg";
 import Edit from "assets/svg/edit_icon.svg";
 import Delete from "assets/svg/delete_icon.svg";
 import BarMenu from "assets/svg/bar_menu.svg";
+import Facebook from "assets/svg/facebook.svg";
+import Whatsapp from "assets/svg/whatsapp.svg";
+import Linkedin from "assets/svg/linkedin.svg";
+import Instagram from "assets/svg/instagram.svg";
 
 const Icon = {
   UploadIcon,
@@ -29,8 +33,11 @@ const Icon = {
   Edit,
   Delete,
   BarMenu,
-
   ArrowUp,
   ArrowDown,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Whatsapp,
 };
 export default Icon;

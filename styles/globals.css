@@ -51,3 +51,5 @@ img {
 @import "../src/components/layout/DashboardLayout.css";
 
 @import "pages/dashboard/index.css";
+@import "pages/about.css";
+@import "pages/contact.css";

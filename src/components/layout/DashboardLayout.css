@@ -4,8 +4,14 @@
 }
 @media screen and (max-width: 639px) {
   .dashboardLayout .dashboardLayout__bottomNavbar {
-    @apply grid grid-cols-4;
+    @apply grid;
     border-radius: 0;
+  }
+  .dashboardLayout .dashboardLayout__bottomNavbar.user__navbar {
+    @apply grid-cols-3;
+  }
+  .dashboardLayout .dashboardLayout__bottomNavbar.admin__navbar {
+    @apply grid-cols-4;
   }
   .dashboardLayout .dashboardLayout__bottomNavbar a,
   .dashboardLayout .dashboardLayout__bottomNavbar > div {

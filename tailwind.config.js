@@ -1,26 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const colors = require('tailwindcss/colors')
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}','./src/layout/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    colors:{
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: colors.black,
-      white: colors.white,
-      green: colors.emerald,
-      gray: colors.trueGray,
-      indigo: colors.indigo,
-      red: colors.rose,
-      yellow: colors.amber,
-      primary: "#0065c5",
-      softPrimary : "#54a7f6",
-      softPrimary2: "#DBECFF",
-      darkPrimary: "#003875",
-      brown: "#808080",
-      smoothPrimary: "#C1E1FF"
-    },
     boxShadow: {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
@@ -36,6 +17,16 @@ module.exports = {
     extend: {
       borderRadius: {
         'circle': '50%',
+      },
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        primary: "#0065c5",
+        softPrimary : "#54a7f6",
+        softPrimary2: "#DBECFF",
+        darkPrimary: "#003875",
+        brown: "#808080",
+        smoothPrimary: "#C1E1FF"
       },
       zIndex: {
         60: 60,

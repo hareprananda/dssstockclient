@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef } from "react";
+import React, { FC, useEffect, useState, useRef, useMemo } from "react";
 import Image from "next/image";
 import BottomDecoration from "assets/svg/homeBottomDecoration.svg";
 import BottomLeftDecoration from "assets/svg/homeBottomLeftDecoration.svg";
@@ -13,12 +13,14 @@ import { useAppDispatch } from "src/redux/ReduxHook";
 import ReducerActions from "src/redux/ReducerAction";
 import BackDrop from "src/components/Element/Backdrop/Backdrop";
 import { useWindowResize } from "src/hooks/useWindowResize";
+import Link from "next/link";
 const InitialLayout: FC = ({ children }) => {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const { width, height } = useWindowResize();
+
   useEffect(() => {
     dispatch(ReducerActions.ui.setBackDrop(true));
   }, []);
@@ -26,6 +28,7 @@ const InitialLayout: FC = ({ children }) => {
   const toggleMenu = () => {
     setShowMenu((current) => !current);
   };
+
   useEffect(() => {
     const menuRefEl = menuRef.current;
     if (width === 0) return;
@@ -33,6 +36,7 @@ const InitialLayout: FC = ({ children }) => {
       menuRefEl.style.top = showMenu ? "0" : "-200px";
     }
   }, [showMenu]);
+
   useEffect(() => {
     if (height === 0) return;
     const bottomIcon1 = document.querySelector(
@@ -46,6 +50,25 @@ const InitialLayout: FC = ({ children }) => {
       bottomIcon2.style.bottom = `-${775 - height}px`;
     }
   }, [height]);
+
+  const currentPath = router.asPath;
+  const availableLink = useMemo(
+    () => [
+      {
+        name: "Login",
+        path: RouteUrl.login,
+      },
+      {
+        name: "About",
+        path: RouteUrl.about,
+      },
+      {
+        name: "Contact",
+        path: RouteUrl.contact,
+      },
+    ],
+    []
+  );
 
   if (typeof window !== "undefined") {
     const userStorage = LocalStorage.get("user_data");
@@ -65,28 +88,40 @@ const InitialLayout: FC = ({ children }) => {
           ref={menuRef}
           style={{ zIndex: 90 }}
         >
-          <p className="text-primary bg-gray font-bold text-2xl">Login</p>
-          <p className="text-softPrimary text-2xl">About</p>
-          <p className="text-softPrimary text-2xl">Contact</p>
+          {availableLink.map((link) => (
+            <Link key={link.name} href={link.path}>
+              <a
+                className={`bg-gray text-2xl no-underline ${
+                  new RegExp(`^${link.path}$`).test(currentPath)
+                    ? "font-bold text-primary"
+                    : "text-softPrimary"
+                }`}
+              >
+                {link.name}
+              </a>
+            </Link>
+          ))}
         </div>
         <div className="initialLayout-menu__bar" onClick={toggleMenu}>
           <Icon.BarMenu width="30px" height="30px" fill="#0065c5" />
         </div>
       </div>
       <div className="initialLayout-header__separator" />
-      <div className="initialLayout-mainIcon">
-        <div style={{ maxWidth: "1000px", width: "55vw" }}>
-          <Image
-            src={HomeBackground}
-            width={1226}
-            height={667}
-            placeholder="blur"
-            priority
-            loading="eager"
-            alt="Home Background"
-          />
+      {router.asPath.length === 1 && (
+        <div className="initialLayout-mainIcon">
+          <div style={{ maxWidth: "1000px", width: "55vw" }}>
+            <Image
+              src={HomeBackground}
+              width={1226}
+              height={667}
+              placeholder="blur"
+              priority
+              loading="eager"
+              alt="Home Background"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <FixedImageWrapper
         style={{ zIndex: -1 }}

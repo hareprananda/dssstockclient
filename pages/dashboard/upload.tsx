@@ -84,6 +84,7 @@ const Upload = () => {
       setReadyToUpload(true);
     } catch (_) {
       toggleErrorModal();
+      setUploadStatus("error");
       setModalMessage("File yang anda upload salah");
     }
   };

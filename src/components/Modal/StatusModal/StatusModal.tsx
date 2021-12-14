@@ -7,12 +7,14 @@ interface Props {
   open: boolean;
   title: string;
   type: "success" | "error";
+  onClickButton?: () => void;
   toggleModal: () => void;
 }
 
 const StatusModal: React.FC<Props> = ({
   text,
   toggleModal,
+  onClickButton,
   type,
   open,
   title,
@@ -53,7 +55,14 @@ const StatusModal: React.FC<Props> = ({
               {type === "error" && (
                 <Icon.Close fill="white" viewBox="0 0 48 48" />
               )}
-              {type === "success" && <Icon.Check fill="white" />}
+              {type === "success" && (
+                <Icon.Check
+                  height="48"
+                  width="48"
+                  fill="white"
+                  viewBox="0 0 48 48"
+                />
+              )}
             </div>
           </div>
           <div className="flex flex-col items-center py-5 px-5">
@@ -61,7 +70,7 @@ const StatusModal: React.FC<Props> = ({
             <p className="text-2xl mt-4 text-center">{text}</p>
             <button
               className="bg-yellow-400 mt-4  text-xl rounded px-4 py-2 text-white"
-              onClick={toggleModal}
+              onClick={onClickButton ? onClickButton : toggleModal}
             >
               Okee
             </button>
