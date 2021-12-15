@@ -89,7 +89,8 @@ const Dashboard: Page = () => {
     );
   }
   const numberOfDataOptionList = (
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void,
+    value: number
   ) => {
     const optionList: JSX.Element[] = [];
     for (let i = 1; i <= resultData.length / 5; i++) {
@@ -97,7 +98,7 @@ const Dashboard: Page = () => {
     }
     return (
       <select
-        value={resultBoxLimit}
+        value={value}
         onChange={onChange}
         className="block appearance-none bg-primary bg-opacity-20 border font-bold border-gray-200 text-primary py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
       >

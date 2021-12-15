@@ -8,10 +8,12 @@ import {
   ResponseConfigDssRawData,
   ResponseDssCriteria,
 } from "src/request/DSS/RequestDSSType";
+import LocalStorage from "src/utils/localstorage/LocalStorage";
 
 interface Props {
   numberOfDataOptionList: (
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void,
+    value: number
   ) => JSX.Element;
 }
 
@@ -264,6 +266,8 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
   const toggleBobotModal = () => {
     setOpenCriteriaModal((current) => !current);
   };
+  const userData = LocalStorage.get("user_data");
+
   return (
     <div className="mt-10">
       <BobotModal
@@ -306,24 +310,26 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
                 <td className="p-2 bg-primary bg-opacity-20 font text-primary font-bold">
                   Keterangan
                 </td>
-                {/* {criteriaList.map((value) => (
-                <td key={value._id} className="text-primary text-center ">
-                  {value.keterangan.slice(0, 1).toUpperCase() +
-                    value.keterangan.slice(1)}
-                </td>
-              ))} */}
+                {criteriaList.map((value) => (
+                  <td key={value._id} className="text-primary text-center ">
+                    {value.keterangan.slice(0, 1).toUpperCase() +
+                      value.keterangan.slice(1)}
+                  </td>
+                ))}
               </tr>
             </tbody>
           </table>
         </div>
-        <div className="flex flex-row-reverse">
-          <button
-            onClick={toggleBobotModal}
-            className="bg-primary text-white px-5 py-2 text-lg rounded font-bold mt-5"
-          >
-            Update Bobot
-          </button>
-        </div>
+        {userData?.level === "admin" ? (
+          <div className="flex flex-row-reverse">
+            <button
+              onClick={toggleBobotModal}
+              className="bg-primary text-white px-5 py-2 text-lg rounded font-bold mt-5"
+            >
+              Update Bobot
+            </button>
+          </div>
+        ) : null}
       </div>
       <div className="mt-10">
         <span className="text-xl sm:text-2xl md:text-3xl text-darkPrimary font-bold  sm:bg-darkPrimary sm:text-white sm:px-4 py-1 sm:font-semibold rounded-md">
@@ -333,7 +339,7 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           <p className="block  text-primary   text-lg font-bold mr-3">
             Tampilkan :
           </p>
-          {numberOfDataOptionList(changeRawDataResult)}
+          {numberOfDataOptionList(changeRawDataResult, numberOfRawData)}
         </div>
         <div className="w-full overflow-auto">
           <table className="w-full mt-10">
@@ -350,7 +356,10 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           <p className="block  text-primary   text-lg font-bold mr-3">
             Tampilkan :
           </p>
-          {numberOfDataOptionList(changeNormalizationDataResult)}
+          {numberOfDataOptionList(
+            changeNormalizationDataResult,
+            numberOfNormalizationData
+          )}
         </div>
         <div className="w-full overflow-auto">
           <table className="w-full mt-10">
@@ -367,7 +376,10 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           <p className="block  text-primary   text-lg font-bold mr-3">
             Tampilkan :
           </p>
-          {numberOfDataOptionList(changeWeightNormalizationDataResult)}
+          {numberOfDataOptionList(
+            changeWeightNormalizationDataResult,
+            numberOfWeightNormalizationData
+          )}
         </div>
         <div className="w-full overflow-auto">
           <table className="w-full mt-10">
@@ -461,7 +473,10 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           <p className="block  text-primary   text-lg font-bold mr-3">
             Tampilkan :
           </p>
-          {numberOfDataOptionList(changeIdealSolutionDistance)}
+          {numberOfDataOptionList(
+            changeIdealSolutionDistance,
+            numberOfIdealSolutionDistance
+          )}
         </div>
         <div className="w-full overflow-auto">
           <table className="w-full mt-10">
@@ -487,7 +502,7 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
           <p className="block  text-primary   text-lg font-bold mr-3">
             Tampilkan :
           </p>
-          {numberOfDataOptionList(changeFinalRanking)}
+          {numberOfDataOptionList(changeFinalRanking, numberOfFinalRankingData)}
         </div>
         <div className="w-full overflow-auto">
           <table className="w-full mt-10">
