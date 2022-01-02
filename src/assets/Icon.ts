@@ -17,6 +17,7 @@ import Facebook from "assets/svg/facebook.svg";
 import Whatsapp from "assets/svg/whatsapp.svg";
 import Linkedin from "assets/svg/linkedin.svg";
 import Instagram from "assets/svg/instagram.svg";
+import Excel from "assets/svg/excelIcon.svg";
 
 const Icon = {
   UploadIcon,
@@ -39,5 +40,6 @@ const Icon = {
   Instagram,
   Linkedin,
   Whatsapp,
+  Excel,
 };
 export default Icon;

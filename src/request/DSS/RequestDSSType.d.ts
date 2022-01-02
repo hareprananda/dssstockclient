@@ -92,10 +92,17 @@ export type ResponseDssSingleStock = {
   status: "Not found" | "Ok";
 };
 
-export type ConfigDssNewFinancial = (
-  data: TScreeningResult,
-  additional: { harga: number; jumlahSaham: number }
-) => Config;
+export type DssNewFinancialBody = {
+  general: TScreeningResult["general"];
+  lababersih: TScreeningResult["income"]["Jumlah laba (rugi)"];
+  ekuitas: TScreeningResult["balance"]["Jumlah ekuitas"];
+  utanglancar: TScreeningResult["balance"]["Jumlah liabilitas jangka pendek"];
+  asetlancar: TScreeningResult["balance"]["Jumlah aset lancar"];
+  dividen: boolean;
+  harga?: number;
+  jumlahSaham?: number;
+}[];
+export type ConfigDssNewFinancial = (data: DssNewFinancialBody) => Config;
 
 type UpdateData = {
   ekuitas: number;

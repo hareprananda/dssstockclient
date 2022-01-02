@@ -36,6 +36,16 @@ img {
 .full-chart {
   height: 600px;
 }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 @media screen and (max-width: 500px) {
   .full-chart {
     height: 470px;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "src/assets/Icon";
 import Backdrop from "src/components/Element/Backdrop/Backdrop";
 
@@ -6,7 +6,7 @@ interface Props {
   open: boolean;
   toggle: () => void;
   data: { ticker: string; nama: string };
-  onSubmit: (data: { harga: number; jumlahSaham: number }) => void;
+  onSubmit: (data: { harga: string; jumlahSaham: string }) => void;
   onCancel: () => void;
 }
 
@@ -18,8 +18,8 @@ const NewCompanyModal: React.FC<Props> = ({
   onCancel,
 }) => {
   const [inputData, setInputData] = useState({
-    harga: 0,
-    jumlahSaham: 0,
+    harga: "0",
+    jumlahSaham: "0",
   });
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +32,14 @@ const NewCompanyModal: React.FC<Props> = ({
   const submitData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(inputData);
-    toggle();
   };
+
+  useEffect(() => {
+    setInputData({
+      harga: "0",
+      jumlahSaham: "0",
+    });
+  }, [data]);
 
   return (
     <>

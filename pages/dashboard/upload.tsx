@@ -6,8 +6,9 @@ import StatusModal from "src/components/Modal/StatusModal/StatusModal";
 import NewCompanyModal from "src/components/Modal/NewCompanyModal/NewCompanyModal";
 import useRequest from "src/hooks/useRequest";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
-import { TScreeningResult } from "src/types/File";
 import ReadExcel from "src/utils/excel/ReadExcel";
+import { DssNewFinancialBody } from "src/request/DSS/RequestDSSType";
+import { AxiosError } from "axios";
 
 const dragAndDropText = {
   onDrag: "Relase upload file",
@@ -16,22 +17,30 @@ const dragAndDropText = {
 
 const Upload = () => {
   const [readyToUpload, setReadyToUpload] = useState(false);
-  const screeningData = useRef<TScreeningResult>();
+  const [screeningData, setScreeningData] = useState<DssNewFinancialBody>([]);
   const [uploadStatus, setUploadStatus] = useState<"success" | "error">(
     "success"
   );
-  const [openErrorModal, setOpenErrorModal] = useState(false);
+  const [openStatusModal, setOpenStatusModal] = useState(false);
   const [openNewCompanyModal, setOpenNewCompanyModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [onClickStatusModal, setOnClickStatusModal] = useState<
+    undefined | (() => void)
+  >();
 
   //state for new company that need to upload price and number of shares
-  const [additionalData, setAdditionalData] = useState({
-    harga: 0,
-    jumlahSaham: 0,
-    newCompanyTicker: "",
-    newCompanyName: "",
-  });
+  const [additionalData, setAdditionalData] = useState<
+    {
+      harga: number;
+      jumlahSaham: number;
+      newCompanyTicker: string;
+      newCompanyName: string;
+    }[]
+  >([]);
+  const [activeAdditionalDataIndex, setActiveAdditionalDataIndex] = useState<
+    number | undefined
+  >();
   const { RequestAuthenticated } = useRequest();
   const clickTooltip = () => {
     const tooltipEl = document.querySelector("#upload__tooltip");
@@ -59,19 +68,19 @@ const Upload = () => {
     inputElement.click();
   };
 
-  useEffect(() => {
-    if (readyToUpload) {
-      const data = screeningData.current as TScreeningResult;
-      const descriptionEl = document.querySelector(
-        "#upload__uploaded-file__description"
-      ) as HTMLParagraphElement;
-      descriptionEl.textContent = `Laporan keuangan ${data.general.ticker} periode ${data.general.periode} ${data.general.tahun}`;
-    }
-  }, [readyToUpload, loading]);
-  const uploadedFile = useRef<File | null>(null);
-
+  // useEffect(() => {
+  //   if (readyToUpload) {
+  //     const data = screeningData.current as TScreeningResult;
+  //     const descriptionEl = document.querySelector(
+  //       "#upload__uploaded-file__description"
+  //     ) as HTMLParagraphElement;
+  //     descriptionEl.textContent = `Laporan keuangan ${data.general.ticker} periode ${data.general.periode} ${data.general.tahun}`;
+  //   }
+  // }, [readyToUpload, loading]);
+  const fileToRead = useRef<File | null>(null);
+  const allUploadedFile = useRef<File[]>([]);
   const readFile = async () => {
-    const excelRead = ReadExcel({ path: uploadedFile.current as File });
+    const excelRead = ReadExcel({ path: fileToRead.current as File });
     // const descriptionEl = document.querySelector(
     //   "#upload__uploaded-file__description"
     // ) as HTMLParagraphElement;
@@ -79,13 +88,48 @@ const Upload = () => {
 
     try {
       const data = await excelRead.getData();
-      screeningData.current = data;
-
-      setReadyToUpload(true);
+      setScreeningData((current) => {
+        const isUnique = !current.find(
+          (cv) =>
+            cv.general.ticker === data.general.ticker &&
+            cv.general.periode === data.general.periode &&
+            cv.general.tahun === data.general.tahun
+        );
+        if (isUnique) {
+          return [
+            ...current,
+            {
+              dividen: data.dividen !== 0,
+              ekuitas: data.balance["Jumlah ekuitas"],
+              lababersih: data.income["Jumlah laba (rugi)"],
+              general: data.general,
+              utanglancar: data.balance["Jumlah liabilitas jangka pendek"],
+              asetlancar: data.balance["Jumlah aset lancar"],
+            },
+          ];
+        } else return current;
+      });
     } catch (_) {
-      toggleErrorModal();
+      setOpenStatusModal(true);
       setUploadStatus("error");
       setModalMessage("File yang anda upload salah");
+    }
+  };
+
+  const recursiveReadFile = async (index = 0): Promise<any> => {
+    const fileLength = allUploadedFile.current.length;
+    setLoading(true);
+    const files = allUploadedFile.current[index];
+    fileToRead.current = files as File;
+    if (files) {
+      try {
+        await readFile();
+      } catch (err) {}
+    }
+    if (index < fileLength - 1) return recursiveReadFile(index + 1);
+    else {
+      setLoading(false);
+      setReadyToUpload(true);
     }
   };
 
@@ -116,8 +160,12 @@ const Upload = () => {
       dropArea[event]("drop", async (e) => {
         const evt = e as DragEvent;
         evt.preventDefault();
-        uploadedFile.current = evt.dataTransfer?.files[0] as File;
-        await readFile();
+        dropArea.classList.remove(...dropAreaAdditionalClass);
+        allUploadedFile.current = [
+          ...allUploadedFile.current,
+          ...(evt.dataTransfer?.files as unknown as File[]),
+        ];
+        recursiveReadFile();
       });
     };
 
@@ -126,15 +174,11 @@ const Upload = () => {
   }, []);
 
   const onChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
-    const files = e.target.files?.[0];
-    uploadedFile.current = files as File;
-    if (files) {
-      try {
-        await readFile();
-      } catch (err) {}
-    }
-    setLoading(false);
+    allUploadedFile.current = [
+      ...allUploadedFile.current,
+      ...(e.target.files as unknown as File[]),
+    ];
+    recursiveReadFile();
   };
 
   const finishRequest = () => {
@@ -143,52 +187,144 @@ const Upload = () => {
     cleanFile();
   };
 
+  const processErrorMessage = (
+    messages: string[],
+    from: "error" | "success"
+  ) => {
+    additionalDataRefLength.current = 0;
+    const errorMessage = messages
+      .reduce((acc, v) => {
+        if (/amount of stock/g.test(v)) {
+          additionalDataRefLength.current += 1;
+          const newTicker = v.slice(v.length - 4);
+          const findNewData = screeningData.find(
+            (v) => v.general.ticker.toLowerCase() === newTicker.toLowerCase()
+          ) as typeof screeningData[number];
+          const { nama: newCompanyName, ticker: newCompanyTicker } =
+            findNewData.general;
+          setAdditionalData((current) => [
+            ...current,
+            {
+              newCompanyName,
+              newCompanyTicker,
+              harga: 0,
+              jumlahSaham: 0,
+            },
+          ]);
+        }
+        return `${acc}, ${v}`;
+      }, "")
+      .slice(2);
+    if (additionalDataRefLength.current === 0) setScreeningData([]);
+    if (from === "success")
+      setOnClickStatusModal(() => () => switchModalToError(errorMessage));
+    else {
+      setModalMessage(errorMessage);
+      setUploadStatus("error");
+      setOnClickStatusModal(() => {
+        if (additionalDataRefLength.current > 0)
+          return () => {
+            toggleNewCompanyModal();
+            setActiveAdditionalDataIndex(0);
+          };
+        return undefined;
+      });
+    }
+  };
+
+  const additionalDataRefLength = useRef(0);
   const uploadFile = () => {
     setLoading(true);
-    const { harga, jumlahSaham } = additionalData;
-    RequestAuthenticated(
-      ConfigDSS.newFinancial(screeningData.current as TScreeningResult, {
-        harga,
-        jumlahSaham,
-      })
-    )
+    setOnClickStatusModal(undefined);
+    for (const additional of additionalData) {
+      const screeningDataIndex = screeningData.findIndex(
+        (data) => data.general.ticker === additional.newCompanyTicker
+      );
+      screeningData[screeningDataIndex].harga = additional.harga;
+      screeningData[screeningDataIndex].jumlahSaham = additional.jumlahSaham;
+    }
+    RequestAuthenticated(ConfigDSS.newFinancial(screeningData))
       .then(() => {
-        setOpenErrorModal(true);
+        setOpenStatusModal(true);
         setUploadStatus("success");
-        const data = screeningData.current as TScreeningResult;
-        setModalMessage(
-          `Laporan keuangan ${data.general.ticker} periode ${data.general.periode} ${data.general.tahun} berhasil dikirim ke server`
-        );
+        const modalText =
+          screeningData
+            .reduce((acc, v) => {
+              acc += `, ${v.general.ticker} periode ${v.general.periode} ${v.general.tahun}`;
+              return acc;
+            }, "")
+            .slice(2) + " berhasil dikirim ke server";
+        setModalMessage(modalText);
         setAdditionalData((current) => ({
           ...current,
           harga: 0,
           jumlahSaham: 0,
         }));
+        setScreeningData([]);
         finishRequest();
       })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          const errorMessage = err.response.data.error;
-          if (/amount of stock/g.test(errorMessage)) {
-            setAdditionalData((current) => ({
-              ...current,
-              newCompanyName: screeningData.current?.general.nama as string,
-              newCompanyTicker: screeningData.current?.general.ticker as string,
-            }));
-            setLoading(false);
-            toggleNewCompanyModal();
-          } else {
-            setOpenErrorModal(true);
-            setModalMessage(errorMessage);
+      .catch(
+        (
+          err: AxiosError<{
+            error: { message: string[] };
+            success: { message: string[] };
+          }>
+        ) => {
+          if (!err.response) throw err;
+
+          if (err.response.status === 400) {
+            const { error, success } = err.response.data;
+            if (success.message.length > 0) {
+              const modalMessage = success.message
+                .reduce((acc, v) => `${acc}, ${v}`, "")
+                .slice(2);
+              setModalMessage(modalMessage);
+              setUploadStatus("success");
+              if (error.message) {
+                processErrorMessage(error.message, "success");
+              }
+            } else {
+              processErrorMessage(error.message, "error");
+            }
+            toggleStatusModal();
             finishRequest();
+            //buat modal untuk menampilkan sukses terlebih dahulu
+
+            // const errorMessage = err.response.data.error;
+            // if (/amount of stock/g.test(errorMessage)) {
+            //   // setAdditionalData((current) => ({
+            //   //   ...current,
+            //   //   newCompanyName: screeningData.current?.general.nama as string,
+            //   //   newCompanyTicker: screeningData.current?.general.ticker as string,
+            //   // }));
+            //   // setLoading(false);
+            //   // toggleNewCompanyModal();
+            // } else {
+            //   setOpenStatusModal(true);
+            //   setModalMessage(errorMessage);
+            //   finishRequest();
+            // }
           }
+          //setUploadStatus("error");
         }
-        setUploadStatus("error");
-      });
+      );
   };
 
-  const toggleErrorModal = () => {
-    setOpenErrorModal((current) => !current);
+  const switchModalToError = (errMessage: string) => {
+    setOnClickStatusModal(() => {
+      if (additionalDataRefLength.current > 0)
+        return () => {
+          toggleNewCompanyModal();
+          setActiveAdditionalDataIndex(0);
+        };
+      return undefined;
+    });
+    setUploadStatus("error");
+    setModalMessage(errMessage);
+  };
+
+  const toggleStatusModal = () => {
+    setOpenStatusModal((current) => !current);
   };
 
   const toggleNewCompanyModal = () => {
@@ -200,29 +336,42 @@ const Upload = () => {
     toggleNewCompanyModal();
   };
   const onSubmitAddSharePrice = (data: {
-    harga: number;
-    jumlahSaham: number;
+    harga: string;
+    jumlahSaham: string;
   }) => {
     const { harga, jumlahSaham } = data;
-    setAdditionalData((current) => ({
-      ...current,
-      harga,
-      jumlahSaham,
-    }));
+    setActiveAdditionalDataIndex((current) =>
+      current !== undefined ? ++current : current
+    );
+    setAdditionalData((current) => {
+      current[activeAdditionalDataIndex as number].harga = parseInt(harga);
+      current[activeAdditionalDataIndex as number].jumlahSaham =
+        parseInt(jumlahSaham);
+      return [...current];
+    });
   };
 
   useEffect(() => {
-    if (Object.values(additionalData).includes(0)) return;
-    uploadFile();
+    if (
+      activeAdditionalDataIndex === additionalData.length &&
+      additionalData.length > 0
+    ) {
+      uploadFile();
+      toggleNewCompanyModal();
+      toggleStatusModal();
+      setActiveAdditionalDataIndex(0);
+    }
   }, [additionalData]);
+
   return (
     <div className="mt-28">
       <StatusModal
         title={uploadStatus === "error" ? "Oops" : "Sukses"}
         type={uploadStatus}
         text={modalMessage}
-        open={openErrorModal}
-        toggleModal={toggleErrorModal}
+        open={openStatusModal}
+        onClickButton={onClickStatusModal}
+        toggleModal={toggleStatusModal}
       />
       <NewCompanyModal
         onCancel={onCancelAddSharePrice}
@@ -230,8 +379,13 @@ const Upload = () => {
         toggle={toggleNewCompanyModal}
         open={openNewCompanyModal}
         data={{
-          nama: additionalData.newCompanyName,
-          ticker: additionalData.newCompanyTicker,
+          nama: additionalData[activeAdditionalDataIndex as number]
+            ?.newCompanyName,
+          ticker:
+            additionalData[activeAdditionalDataIndex as number]
+              ?.newCompanyTicker,
+          // nama: "MALONE",
+          // ticker: "MBAP",
         }}
       />
       <div className="flex justify-between items-center relative">
@@ -287,12 +441,35 @@ const Upload = () => {
           <input
             type="file"
             accept=".xlsx"
+            multiple
             onChange={onChangeInput}
             className="hidden"
             id="masterInput"
           />
+          {readyToUpload && (
+            <p className="text-lg">
+              {screeningData.length} Data Laporan Keuangan
+            </p>
+          )}
+          <div
+            className="grid grid-cols-4 gap-2 mt-5 hide-scrollbar"
+            style={{ maxHeight: "150px", overflow: "auto" }}
+          >
+            {screeningData.map((result, key) => (
+              <div key={key} className="flex flex-col items-center">
+                <Icon.Excel
+                  className="text-primary"
+                  style={{ width: "50px", height: "50px" }}
+                />
+                <p className="text-center">
+                  {result.general.ticker} periode {result.general.periode}{" "}
+                  {result.general.tahun}
+                </p>
+              </div>
+            ))}
+          </div>
 
-          {readyToUpload ? (
+          {readyToUpload && (
             <>
               <button
                 disabled={loading}
@@ -301,12 +478,9 @@ const Upload = () => {
               >
                 Upload
               </button>
-              <p
-                className="mt-2 text-xl"
-                id="upload__uploaded-file__description"
-              ></p>
             </>
-          ) : (
+          )}
+          {!loading && !readyToUpload && (
             <p
               className="text-center text-primary text-3xl pt-8"
               id="upload__description"

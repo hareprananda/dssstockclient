@@ -37,23 +37,11 @@ const ConfigDSS = (() => {
     url: `${AppConfig.V1}/financial/${ticker}`,
   });
 
-  const newFinancial: ConfigDssNewFinancial = (data, additionalData) => {
-    const newCompanyData = Object.values(additionalData).includes(0)
-      ? {}
-      : additionalData;
-    const usedData = {
-      general: data.general,
-      lababersih: data.income["Jumlah laba (rugi)"],
-      ekuitas: data.balance["Jumlah ekuitas"],
-      utanglancar: data.balance["Jumlah liabilitas jangka pendek"],
-      asetlancar: data.balance["Jumlah aset lancar"],
-      dividen: data.dividen !== 0,
-      ...newCompanyData,
-    };
+  const newFinancial: ConfigDssNewFinancial = (data) => {
     return {
       method: "POST",
       url: `${AppConfig.V1}/financial`,
-      data: usedData,
+      data,
     };
   };
 

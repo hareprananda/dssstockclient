@@ -133,7 +133,7 @@ const Dashboard: Page = () => {
           <p className="block  text-primary   text-lg font-bold mr-3">
             Tampilkan :
           </p>
-          {numberOfDataOptionList(changeBoxResult)}
+          {numberOfDataOptionList(changeBoxResult, resultBoxLimit)}
         </div>
         <div className="dashboard__result-box__container">{resultBox}</div>
       </div>
