@@ -31,6 +31,8 @@ const NewCompanyModal: React.FC<Props> = ({
 
   const submitData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!Object.values(inputData).every((value) => !!value && value !== "0"))
+      return alert("Mohon masukkan input dengan benar");
     onSubmit(inputData);
   };
 

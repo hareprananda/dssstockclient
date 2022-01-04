@@ -129,9 +129,19 @@ const Upload = () => {
     if (index < fileLength - 1) return recursiveReadFile(index + 1);
     else {
       setLoading(false);
-      setReadyToUpload(true);
     }
   };
+
+  useEffect(() => {
+    setReadyToUpload(screeningData.length > 0);
+  }, [screeningData]);
+
+  useEffect(() => {
+    if (uploadStatus === "error" && !loading && screeningData.length === 0) {
+      allUploadedFile.current = [];
+      fileToRead.current = null;
+    }
+  }, [loading]);
 
   useEffect(() => {
     const dropArea = document.querySelector("#upload_area") as HTMLDivElement;
@@ -215,7 +225,12 @@ const Upload = () => {
         return `${acc}, ${v}`;
       }, "")
       .slice(2);
-    if (additionalDataRefLength.current === 0) setScreeningData([]);
+    if (additionalDataRefLength.current === 0) {
+      allUploadedFile.current = [];
+      fileToRead.current = null;
+      setScreeningData([]);
+      setAdditionalData([]);
+    }
     if (from === "success")
       setOnClickStatusModal(() => () => switchModalToError(errorMessage));
     else {
@@ -255,13 +270,11 @@ const Upload = () => {
             }, "")
             .slice(2) + " berhasil dikirim ke server";
         setModalMessage(modalText);
-        setAdditionalData((current) => ({
-          ...current,
-          harga: 0,
-          jumlahSaham: 0,
-        }));
+        setAdditionalData([]);
         setScreeningData([]);
         finishRequest();
+        allUploadedFile.current = [];
+        fileToRead.current = null;
       })
       .catch(
         (

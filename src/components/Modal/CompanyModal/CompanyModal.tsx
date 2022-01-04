@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Icon from "src/assets/Icon";
 import Backdrop from "src/components/Element/Backdrop/Backdrop";
 import useRequest from "src/hooks/useRequest";
+import ReducerActions from "src/redux/ReducerAction";
+import { useAppDispatch } from "src/redux/ReduxHook";
 import ConfigCompany from "src/request/Company/ConfigCompany";
 import {
   CompanyData,
@@ -22,7 +24,7 @@ const CompanyModal: React.FC<Props> = ({
   successCB,
 }) => {
   const { RequestAuthenticated } = useRequest();
-
+  const dispatch = useAppDispatch();
   const [inputData, setInputData] = useState<CompanyData>({
     _id: "",
     harga: 0,
@@ -44,6 +46,17 @@ const CompanyModal: React.FC<Props> = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { _id: ticker, ...restInputData } = inputData;
+    restInputData["harga"] = parseInt(
+      restInputData["harga"] as unknown as string
+    );
+    restInputData["jumlahSaham"] = parseInt(
+      restInputData["jumlahSaham"] as unknown as string
+    );
+    const isValueCorrect = Object.values(restInputData).every(
+      (value) => !!value
+    );
+    if (!isValueCorrect) return alert("Semua field harus diisi dengan benar");
+    dispatch(ReducerActions.ui.setMainLoader(true));
     RequestAuthenticated<ResponseCompanyUpdate>(
       ConfigCompany.update(ticker, restInputData)
     )
@@ -53,6 +66,9 @@ const CompanyModal: React.FC<Props> = ({
       })
       .catch(() => {
         alert("Oops something gone wrong");
+      })
+      .finally(() => {
+        dispatch(ReducerActions.ui.setMainLoader(false));
       });
   };
 

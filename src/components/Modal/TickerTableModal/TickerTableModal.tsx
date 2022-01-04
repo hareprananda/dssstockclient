@@ -65,8 +65,12 @@ const TickerTableModal: React.FC<Props> = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputData || loading) return;
-    dispatch(ReducerActions.ui.setMainLoader(true));
     const { adanyaDividen, ...restInputData } = inputData;
+    const isInputCorrect = Object.values(restInputData).every(
+      (value) => !!value.toString().trim()
+    );
+    if (!isInputCorrect) return alert("Semua field harus diisi dengan benar");
+    dispatch(ReducerActions.ui.setMainLoader(true));
     const inputedData = { ...restInputData, dividen: adanyaDividen as 0 | 1 };
     RequestAuthenticated<ResponseDssUpdateFinancial>(
       ConfigDSS.updateFinancial(router.query.ticker as string, inputedData)
@@ -93,7 +97,10 @@ const TickerTableModal: React.FC<Props> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setInputData((current) => ({ ...current, [name]: parseInt(value) }));
+    setInputData((current) => ({
+      ...current,
+      [name]: value ? parseInt(value) : "",
+    }));
   };
   const deleteSuccess = () => {
     dispatch(ReducerActions.ui.setMainLoader(true));
@@ -184,7 +191,7 @@ const TickerTableModal: React.FC<Props> = ({
                   id={value.name}
                   name={value.name}
                   onChange={onChangeInput}
-                  type="text"
+                  type="number"
                   value={inputData[value.name]}
                 />
               )}

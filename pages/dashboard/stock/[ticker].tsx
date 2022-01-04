@@ -10,7 +10,6 @@ import useRequest from "src/hooks/useRequest";
 import ReducerActions from "src/redux/ReducerAction";
 import { useAppDispatch, useAppSelector } from "src/redux/ReduxHook";
 import ConfigCompany from "src/request/Company/ConfigCompany";
-import { CompanyData } from "src/request/Company/RequestCompanyType";
 import ConfigDSS from "src/request/DSS/ConfigDSS";
 import { ResponseDssSingleStock } from "src/request/DSS/RequestDSSType";
 import { RouteUrl } from "src/route/RouteUrl";
@@ -61,13 +60,8 @@ const Ticker: React.FC = () => {
     setOpenUpdateCompanyModal((current) => !current);
   };
 
-  const updateCompanySuccess = (data: CompanyData) => {
-    setSummary((current) => ({
-      ...current,
-      harga: data.harga,
-      marketCap: data.harga * data.jumlahSaham,
-      nama: data.nama,
-    }));
+  const updateCompanySuccess = () => {
+    getSingleData();
   };
 
   const toggleOpenDeleteConfirmation = () => {
