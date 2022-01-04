@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useChart from "src/hooks/useChart";
 import { ResponseDssSingleStock } from "src/request/DSS/RequestDSSType";
 import ChartDefaultOptions from "src/utils/chart/ChartDefaultOptions";
@@ -6,11 +6,12 @@ import { useWindowResize } from "src/hooks/useWindowResize";
 import { Chart } from "chart.js";
 
 interface Props {
-  detailList: ResponseDssSingleStock["detail"];
+  detailListProps: ResponseDssSingleStock["detail"];
 }
 
-const TickerChart: React.FC<Props> = ({ detailList }) => {
+const TickerChart: React.FC<Props> = ({ detailListProps }) => {
   const { width: windowWidth } = useWindowResize();
+  const [detailList, setDetailList] = useState<Props["detailListProps"]>([]);
   const incomeChart = useChart("ticker__income-chart", {
     type: "bar",
     data: {
@@ -79,6 +80,11 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
   });
 
   useEffect(() => {
+    if (detailListProps.length === 0) return;
+    setDetailList(detailListProps);
+  }, [detailListProps]);
+
+  useEffect(() => {
     if (!incomeChart) return;
     const pembulatan = detailList[detailList.length - 1].pembulatan;
     const pembulatanMultiply = Math.pow(10, pembulatan === 1 ? 0 : pembulatan);
@@ -136,6 +142,7 @@ const TickerChart: React.FC<Props> = ({ detailList }) => {
     }
     balanceChart.update();
   }, [detailList]);
+
   useEffect(() => {
     if (windowWidth === 0 || !incomeChart) return;
     const chartElement = document.querySelector(
