@@ -150,19 +150,13 @@ const CountDetail: React.FC<Props> = ({ numberOfDataOptionList }) => {
         <td className="p-2 bg-primary bg-opacity-20 font text-primary">
           {rawData[i]._id}
         </td>
-        <td className="p-2 text-primary">
-          {(rawData[i].marketCap / 1000000000000).toFixed(2)}T
-        </td>
-        <td className="p-2 text-primary">
-          {rawData[i].currentRatio.toFixed(2)}%
-        </td>
+        <td className="p-2 text-primary">{rawData[i].marketCap}</td>
+        <td className="p-2 text-primary">{rawData[i].currentRatio}</td>
         <td className="p-2 text-primary">{rawData[i].adanyaLaba}</td>
         <td className="p-2 text-primary">{rawData[i].adanyaDividen}</td>
-        <td className="p-2 text-primary">
-          {rawData[i].pertumbuhanLaba.toFixed(2)}
-        </td>
-        <td className="p-2 text-primary">{rawData[i].per.toFixed(2)}x</td>
-        <td className="p-2 text-primary">{rawData[i].pbv.toFixed(2)}x</td>
+        <td className="p-2 text-primary">{rawData[i].pertumbuhanLaba}</td>
+        <td className="p-2 text-primary">{rawData[i].per}</td>
+        <td className="p-2 text-primary">{rawData[i].pbv}</td>
       </tr>
     );
   }
