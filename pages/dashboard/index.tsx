@@ -8,6 +8,7 @@ import { ResponseDssResult } from "src/request/DSS/RequestDSSType";
 import CountDetail from "src/components/Page/Dashboard/CountDetail";
 import { useAppDispatch, useAppSelector } from "src/redux/ReduxHook";
 import ReducerActions from "src/redux/ReducerAction";
+import Link from "next/link";
 import { useWindowResize } from "src/hooks/useWindowResize";
 
 const Dashboard: Page = () => {
@@ -17,7 +18,6 @@ const Dashboard: Page = () => {
   const [resultBoxLimit, setResultBoxLimit] = useState(0);
   const [showCountDetail, setShowCountDetail] = useState(false);
   const { requestCountDss } = useAppSelector((state) => state.request);
-  const [search, setSearch] = useState("");
   const { width } = useWindowResize();
   const dispatch = useAppDispatch();
   const fullResultData = useRef<ResponseDssResult>([]);
@@ -49,18 +49,6 @@ const Dashboard: Page = () => {
     );
   }, []);
 
-  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
-  useEffect(() => {
-    const newData = fullResultData.current.filter(
-      (result) =>
-        result.nama.toLowerCase().includes(search.toLowerCase()) ||
-        result.ticker.toLowerCase().includes(search.toLowerCase())
-    );
-    setResultData(newData);
-  }, [search]);
   const resultBox: JSX.Element[] = [];
   for (let i = 0; i < resultBoxLimit; i++) {
     if (!resultData[i]) break;
@@ -106,9 +94,6 @@ const Dashboard: Page = () => {
       </select>
     );
   };
-  const changeBoxResult = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setResultBoxLimit(parseInt(e.target.value));
-  };
 
   return (
     <div className="dashboard__result">
@@ -121,33 +106,27 @@ const Dashboard: Page = () => {
         </p>
       </div>
 
-      <div className="grid place-items-center mt-8">
-        <input
-          onChange={onChangeSearch}
-          placeholder="Search..."
-          className="focus:outline-none placeholder-darkPrimary placeholder-opacity-60 w-full md:w-2/5 bg-primary bg-opacity-20 md:bg-opacity-100 text-darkPrimary px-3 py-1 mx-auto md:bg-softPrimary2 md:border-primary md:border-2 rounded-lg   md:text-2xl text-xl md:shadow-10xl"
-        />
-      </div>
       <div>
-        <div className="flex items-center mt-10">
-          <p className="block  text-primary   text-lg font-bold mr-3">
-            Tampilkan :
-          </p>
-          {numberOfDataOptionList(changeBoxResult, resultBoxLimit)}
-        </div>
         <div className="dashboard__result-box__container">{resultBox}</div>
       </div>
+
       {showCountDetail && (
         <CountDetail
           key={requestCountDss}
           numberOfDataOptionList={numberOfDataOptionList}
-        />
+        >
+          <Link href={"/dashboard/detail"}>
+            <a className="bg-primary absolute top-0 right-0 text-white px-5 py-2 text-lg rounded font-bold mt-5">
+              Detail Perhitungan
+            </a>
+          </Link>
+        </CountDetail>
       )}
       <button
         onClick={() => setShowCountDetail((current) => !current)}
         className="mt-10 py-1 w-full bg-primary text-white font-bold text-center"
       >
-        {showCountDetail ? "Sembunyikan" : "Tampilkan"} detail perhitungan
+        {showCountDetail ? "Sembunyikan" : "Tampilkan lebih banyak"}
       </button>
     </div>
   );
